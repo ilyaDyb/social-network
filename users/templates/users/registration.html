@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
+</head>
+<body>
+    <div class="container" style="width:500px; height:500px;">
+        <div class="card-body p-md-5 mx-md-4">    
+            <div class="text-center">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 185px;" alt="logo">
+                <h4 class="mt-1 mb-5 pb-1">We are The DI Team</h4>
+            </div>
+            <form action="{% url "users:registration" %}" method="POST">
+                {% csrf_token %}
+                {% if form.errors %}
+                  {% for field in form %}
+                      {% for error in field.errors %}
+                          <li>{{ error }}</li>
+                      {% endfor %}
+                  {% endfor %}
+                {% endif %}
+                <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+                <label class="form-label" for="form2Example11" style="margin-left: 0px;">Username</label>
+                <input type="text" id="form2Example11" class="form-control" placeholder="Username">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 73.6px;"></div><div class="form-notch-trailing"></div></div></div>
+    
+                <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+                <label class="form-label" for="form2Example11" style="margin-left: 0px;">Email</label>
+                <input type="email" id="form2Example11" class="form-control" placeholder="Email">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 73.6px;"></div><div class="form-notch-trailing"></div></div></div>
+
+                <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+                <label class="form-label" for="form2Example22" style="margin-left: 0px;">Password</label>
+                <input type="password" id="password1" class="form-control" placeholder="Enter your password">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+    
+                <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+                <label class="form-label" for="form2Example22" style="margin-left: 0px;">Repeat password</label>
+                <input type="password" id="password2" class="form-control" placeholder="Enter your again password">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+
+                <div class="text-center pt-1 mb-5 pb-1">
+                <button data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" data-mdb-button-initialized="true">Register</button>
+
+                </div>
+    
+            </form>
+        </div>
+    </div>
+    <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
+</head>
+<body>
+    <div class="container" style="width:500px; height:500px;">
+        <div class="card-body p-md-5 mx-md-4">    
+            <div class="text-center">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 185px;" alt="logo">
+                <h4 class="mt-1 mb-5 pb-1">We are The DI Team</h4>
+            </div>
+            <form action="{% url "users:login" %}" method="POST">
+                {% csrf_token %}
+                {% if form.errors %}
+                  {% for field in form %}
+                      {% for error in field.errors %}
+                          <li>{{ error }}</li>
+                      {% endfor %}
+                  {% endfor %}
+                {% endif %}
+                <div class="form-outline mb-4">
+                <label class="form-label" style="margin-left: 0px;">Username or email</label>
+                <input name="username_or_email" id="id_username_or_email" type="text" class="form-control" placeholder="Username or email address">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 73.6px;"></div><div class="form-notch-trailing"></div></div></div>
+    
+                <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+                <label class="form-label" style="margin-left: 0px;">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password">
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+    
+                <div class="text-center pt-1 mb-5 pb-1">
+                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Login</button>
+                <a class="text-muted" href="#!">Forgot password?</a>
+                </div>
+    
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                <p class="mb-0 me-2">Don't have an account?</p>
+                <a type="button" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-outline-danger" data-mdb-button-initialized="true" style="" href="{% url "users:registration" %}" aria-pressed="false">Create new</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
+</body>
+</html>
