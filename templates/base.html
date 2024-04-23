@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
 </head>
 <body>
+  {% include "includes/notifications.html" %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-md-auto" style="margin-left:18%;">
@@ -48,5 +49,7 @@
     </div>
     
     <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>
+    <script src="{% static "scripts/notif.js" %}"></script>
 </body>
 </html>

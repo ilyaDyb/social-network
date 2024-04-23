@@ -1,5 +1,4 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from django.contrib.auth import authenticate
 from django import forms
 
 from .models import Users
@@ -15,10 +14,10 @@ class UserRegistrationForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
 
     def clean_email(self):
-        email = self.email
+        email = self.cleaned_data.get("email")
         user = Users.objects.filter(email=email)
         if user.exists():
-            raise forms.ValidationError("A user with such already exists")
+            raise forms.ValidationError("A user with such email already exists")
         return email
 
 class UserLoginForm(forms.Form):

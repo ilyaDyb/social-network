@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import UserLoginForm
+from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 
 def login(request):
@@ -20,20 +20,31 @@ def login(request):
             else:
                 user = auth.authenticate(request, username=username_or_email, password=password)
             if user is None:
-                raise ValidationError("Invalid login or password")
-            auth.login(request, user)
-            return redirect(reverse("feed:index"))
+                form.add_error(None, "Invalid login or password")
+            else:
+                auth.login(request, user)
+                messages.success(request, "Successful login")
+                return redirect(reverse("feed:index"))
             
     else:
         form = UserLoginForm()
     return render(request, "users/login.html", context={"form": form})
 
 def registration(request):
-    return render(request, "users/registration.html")
+    if request.method == "POST":
+        form = UserRegistrationForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Account created successfully")
+            return redirect(reverse("feed:index"))
+    else:
+        form = UserRegistrationForm()
+    return render(request, "users/registration.html", context={"form": form})
 
 
 
 @login_required
 def logout(request):
     auth.logout(request=request)
+    messages.success(request, "Successful logout")
     return redirect(reverse("users:login"))

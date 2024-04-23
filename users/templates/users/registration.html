@@ -19,35 +19,40 @@
                 {% if form.errors %}
                   {% for field in form %}
                       {% for error in field.errors %}
-                          <li>{{ error }}</li>
+                        <div class="alert alert-danger" role="alert">
+                            <li>{{ error }}</li>
+                        </div>
                       {% endfor %}
                   {% endfor %}
                 {% endif %}
                 <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
                 <label class="form-label" for="form2Example11" style="margin-left: 0px;">Username</label>
-                <input type="text" id="form2Example11" class="form-control" placeholder="Username">
+                <input type="text" name="username"  id="form2Example11" class="form-control" placeholder="Username">
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 73.6px;"></div><div class="form-notch-trailing"></div></div></div>
     
                 <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
                 <label class="form-label" for="form2Example11" style="margin-left: 0px;">Email</label>
-                <input type="email" id="form2Example11" class="form-control" placeholder="Email">
+                <input type="email"  name="email" id="form2Example11" class="form-control" placeholder="Email">
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 73.6px;"></div><div class="form-notch-trailing"></div></div></div>
 
                 <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
                 <label class="form-label" for="form2Example22" style="margin-left: 0px;">Password</label>
-                <input type="password" id="password1" class="form-control" placeholder="Enter your password">
+                <input type="password" name="password1"  id="password1" class="form-control" placeholder="Enter your password">
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
     
                 <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
                 <label class="form-label" for="form2Example22" style="margin-left: 0px;">Repeat password</label>
-                <input type="password" id="password2" class="form-control" placeholder="Enter your again password">
+                <input type="password" name="password2"  id="password2" class="form-control" placeholder="Enter your again password">
                 <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
 
                 <div class="text-center pt-1 mb-5 pb-1">
                 <button data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" data-mdb-button-initialized="true">Register</button>
-
                 </div>
     
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                    <p class="mb-0 me-2">Have an account?</p>
+                    <a type="button" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-outline-danger" data-mdb-button-initialized="true" style="" href="{% url "users:login" %}" aria-pressed="false">Sign in</a>
+                </div>
             </form>
         </div>
     </div>

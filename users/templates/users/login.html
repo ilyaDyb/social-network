@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
 </head>
 <body>
+    {% include "includes/notifications.html" %}
     <div class="container" style="width:500px; height:500px;">
         <div class="card-body p-md-5 mx-md-4">    
             <div class="text-center">
@@ -16,13 +17,12 @@
             </div>
             <form action="{% url "users:login" %}" method="POST">
                 {% csrf_token %}
-                {% if form.errors %}
-                  {% for field in form %}
-                      {% for error in field.errors %}
-                          <li>{{ error }}</li>
-                      {% endfor %}
-                  {% endfor %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
                 {% endif %}
+                
                 <div class="form-outline mb-4">
                 <label class="form-label" style="margin-left: 0px;">Username or email</label>
                 <input name="username_or_email" id="id_username_or_email" type="text" class="form-control" placeholder="Username or email address">
@@ -46,5 +46,7 @@
         </div>
     </div>
     <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>
+    <script src="{% static "scripts/notif.js" %}"></script>
 </body>
 </html>
