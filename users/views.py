@@ -1,6 +1,7 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -53,10 +54,28 @@ def logout(request):
     messages.success(request, "Successful logout")
     return redirect(reverse("users:login"))
 
-
+@login_required
 def profile(request, username):
     user = Users.objects.get(username=username)
     context = {
         "user": user,
     }
     return render(request, "users/profile.html", context=context)
+
+
+@login_required
+@csrf_exempt
+def edit_profile_img(request):
+    if request.method == "POST":
+        image = request.FILES.get("file")
+        user = Users.objects.get(id=request.user.id)
+        if user.avatar:
+            user.avatar.delete()
+        user.avatar = image
+        user.save()
+        response = {
+            "message": "You change avatar successful"
+        }
+        return JsonResponse(response)
+    else:
+        return HttpResponse(status=404)

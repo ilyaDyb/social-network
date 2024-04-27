@@ -2,15 +2,21 @@
 {% load static %}
 {% block title %}Profile{% endblock title %}
 {% block content %}
-<div class="row">
+<div class="row mt-3">
     <div class="col">
         <div class="profile-header d-flex align-items-center">
-            <img src="{% static "images/User-avatar.svg.png" %}" width="128" height="128" class="rounded-5 border border-dark mr-3" alt="Profile Picture">
+            <button id="uploadBtn" style="background-color: transparent; opacity: 100%;">
+                {% if user.avatar %}
+                    <img id="previewImg" src="/media/{{ user.avatar }}" width="168" height="168">
+                {% else %}
+                    <img id="previewImg" src="{% static "images/User-avatar.svg.png" %}" width="168" height="168">
+                {% endif %}
+            </button>
+            <input type="file" id="fileInput" style="display: none;">
             <div>
-                <h1 class="profile-name" style="margin-left:30px;">Имя пользователя</h1>
-                <p class="profile-bio"style="margin-left:30px;">Здесь можно написать краткую информацию о себе</p>
+                <h1 class="profile-name" style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
+                <p class="profile-bio"style="margin-left:30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel corporis temporibus quidem reiciendis libero voluptate rerum incidunt accusantium, iure quis eos beatae reprehenderit commodi? Voluptate libero reprehenderit qui accusamus repudiandae!</p>
             </div>
-            <button class="btn btn-primary" style="margin-left:auto;">Edit profile</button>
         </div>
     </div>
 </div>
@@ -33,7 +39,7 @@
     <h2>Последние посты</h2>
     <div class="post">
         <div class="post-header">
-            <img src="post_author_picture.jpg" alt="Post Author Picture" class="post-author-picture">
+            <img src="" alt="Post Author Picture" class="post-author-picture">
             <span class="post-author-name">Имя автора</span>
             <span class="post-time">2 часа назад</span>
         </div>
@@ -47,4 +53,6 @@
     </div>    
     <!-- Еще посты -->
 </div>
+<script src="{% static "users/profile.js" %}"></script>
+
 {% endblock content %}
