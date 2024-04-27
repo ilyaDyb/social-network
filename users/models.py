@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# from django.urls import reverse
+from django.urls import reverse
 
 class Users(AbstractUser):
     first_name = models.CharField(max_length=20, blank=False, null=False)
@@ -10,24 +10,25 @@ class Users(AbstractUser):
     class Meta:
         db_table = "Users"
 
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(to=Users, on_delete=models.CASCADE)
-#     small_info = models.CharField(max_length=256, blank=True, null=True)
-#     photos = models.FileField(upload_to="users_files/users_photos/", blank=True, null=True)
-#     friends = models.ManyToManyField("self", through="Friendship")
+class UserProfile(models.Model):
+    user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="user_profile")
+    small_info = models.CharField(max_length=256, blank=True, null=True)
+    photos = models.FileField(upload_to="users_files/users_photos/", blank=True, null=True)
+    friends = models.ManyToManyField("self", through="Friendship")
 
-#     class Meta:
-#         verbose_name = ("Userprofile")
-#         verbose_name_plural = ("Userprofiles")
+    class Meta:
+        verbose_name = ("Userprofile")
+        verbose_name_plural = ("Userprofiles")
 
-#     def __str__(self):
-#         return self.user
+    def __str__(self):
+        return self.user.username
 
-#     def get_absolute_url(self):
-#         return reverse("Userprofile_detail", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse("Userprofile_detail", kwargs={"pk": self.pk})
 
 
-# class Friendship(models.Model):
+class Friendship(models.Model):
+    ...
 #     STATUS_CHOICES = (
 #         ("pending", "pending"),
 #         ("accepted", "accepted"),

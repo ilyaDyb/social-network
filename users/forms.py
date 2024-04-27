@@ -6,12 +6,14 @@ from .models import Users
 class UserRegistrationForm(UserCreationForm):
     username = forms.CharField()
     email = forms.EmailField()
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
     password1 = forms.CharField()
     password2 = forms.CharField()
 
     class Meta:
         model = Users
-        fields = ["username", "email", "password1", "password2"]
+        fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
 
     def clean_email(self):
         email = self.cleaned_data.get("email")

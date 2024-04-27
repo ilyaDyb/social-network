@@ -1,4 +1,4 @@
-var successMessage = document.getElementById("jq-notification");
+var successMessage = $("#jq-notification");
 // Находим элементы кнопки и input
 const uploadBtn = document.getElementById('uploadBtn');
 const fileInput = document.getElementById('fileInput');
@@ -23,7 +23,12 @@ fileInput.addEventListener('change', function() {
             processData: false,
             contentType: false,
             success: function(data) {
-                console.log("success")
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                // Через 7сек убираем сообщение
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
             },
             error: function(data) {
                 console.log("Error")
@@ -31,4 +36,29 @@ fileInput.addEventListener('change', function() {
         });
         document.getElementById('previewImg').src = imageUrl;
     }
+});
+
+$(document).ready(function() {
+    $("#showBlock").click(function() {
+        $("#hiddenBlock").toggle();
+    });
+    $("#saveButton").click(function(){
+        text = $("#textInput").val();
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/users/profile/edit-short-inf/",
+            data: {"text": text},
+            success: function(data) {
+                $("#shortInf").text(text)
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+            },
+            error: function(data) {
+                console.log("Error")
+            }
+        });
+    });
 });

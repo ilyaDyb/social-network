@@ -15,7 +15,13 @@
             <input type="file" id="fileInput" style="display: none;">
             <div>
                 <h1 class="profile-name" style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
-                <p class="profile-bio"style="margin-left:30px;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel corporis temporibus quidem reiciendis libero voluptate rerum incidunt accusantium, iure quis eos beatae reprehenderit commodi? Voluptate libero reprehenderit qui accusamus repudiandae!</p>
+                <p class="profile-bio" id="shortInf" style="margin-left:30px;">{% if user.user_profile.small_info %}{{ user.user_profile.small_info }}{% else %}No information{% endif %}
+                    <button id="showBlock" class="btn btn-primary" style="width:px; height:20px;"></button>
+                </p>
+                <div id="hiddenBlock" style="display: none; margin-left:30px;">
+                    <textarea type="text" id="textInput"></textarea>
+                    <button id="saveButton" style="position:relative; bottom:7px;">Save</button>
+                </div>
             </div>
         </div>
     </div>
@@ -53,6 +59,7 @@
     </div>    
     <!-- Еще посты -->
 </div>
-<script src="{% static "users/profile.js" %}"></script>
-
 {% endblock content %}
+{% block scripts %}
+<script src="{% static "users/profile.js" %}"></script>
+{% endblock scripts %}

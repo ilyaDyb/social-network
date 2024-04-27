@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from users.models import Users
+from users.models import UserProfile, Users
 
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
@@ -40,10 +40,14 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
+            user = Users.objects.get(username=form.cleaned_data["username"])
+            UserProfile.objects.create(user=user)
             messages.success(request, "Account created successfully")
-            return redirect(reverse("feed:feed"))
+            return redirect(reverse("users:login"))
     else:
         form = UserRegistrationForm()
+    if request.user.is_authenticated:
+        return HttpResponse(status=404)
     return render(request, "users/registration.html", context={"form": form})
 
 
@@ -77,5 +81,22 @@ def edit_profile_img(request):
             "message": "You change avatar successful"
         }
         return JsonResponse(response)
+    else:
+        return HttpResponse(status=404)
+    
+@login_required
+@csrf_exempt
+def edit_short_inf(request):
+    if request.method == "POST":
+        text = request.POST.get("text")
+        print(text)
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            user_profile.small_info = text
+            user_profile.save()
+            return JsonResponse({"message": "Success"})
+        except Exception as ex:
+            print(ex)
+            return JsonResponse({"message": "Error"})
     else:
         return HttpResponse(status=404)
