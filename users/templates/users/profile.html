@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="profile-header d-flex align-items-center">
+            <img src="{% static "images/User-avatar.svg.png" %}" width="128" height="128" class="rounded-5 border border-dark mr-3" alt="Profile Picture">
+            <div>
+                <h1 class="profile-name" style="margin-left:30px;">Имя пользователя</h1>
+                <p class="profile-bio"style="margin-left:30px;">Здесь можно написать краткую информацию о себе</p>
+            </div>
+            <button class="btn btn-primary" style="margin-left:auto;">Edit profile</button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="profile-stats">
+    <div class="stat">
+        <span class="stat-value">1000</span>
+        <span class="stat-label">Друзей</span>
+    </div>
+    <div class="stat">
+        <span class="stat-value">500</span>
+        <span class="stat-label">Подписчиков</span>
+    </div>
+    <div class="stat">
+        <span class="stat-value">300</span>
+        <span class="stat-label">Фотографий</span>
+    </div>
+</div>
+<div class="profile-posts">
+    <h2>Последние посты</h2>
+    <div class="post">
+        <div class="post-header">
+            <img src="post_author_picture.jpg" alt="Post Author Picture" class="post-author-picture">
+            <span class="post-author-name">Имя автора</span>
+            <span class="post-time">2 часа назад</span>
+        </div>
+        <div class="post-content">
+            <p>Текст поста...</p>
+        </div>
+        <div class="post-actions">
+            <button class="like-button">Нравится</button>
+            <button class="comment-button">Комментировать</button>
+        </div>
+    </div>    
+    <!-- Еще посты -->
+</div>
+{% endblock content %}

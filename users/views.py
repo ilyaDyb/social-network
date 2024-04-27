@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from users.models import Users
+
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 
@@ -17,6 +19,8 @@ def login(request):
 
             if "@" in username_or_email:
                 user = authenticate_by_email(username_or_email, password)
+            # elif "+7" in username_or_email_or_phone_number: #в будущем
+
             else:
                 user = auth.authenticate(request, username=username_or_email, password=password)
             if user is None:
@@ -24,7 +28,7 @@ def login(request):
             else:
                 auth.login(request, user)
                 messages.success(request, "Successful login")
-                return redirect(reverse("feed:index"))
+                return redirect(reverse("feed:feed"))
             
     else:
         form = UserLoginForm()
@@ -36,7 +40,7 @@ def registration(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Account created successfully")
-            return redirect(reverse("feed:index"))
+            return redirect(reverse("feed:feed"))
     else:
         form = UserRegistrationForm()
     return render(request, "users/registration.html", context={"form": form})
@@ -48,3 +52,11 @@ def logout(request):
     auth.logout(request=request)
     messages.success(request, "Successful logout")
     return redirect(reverse("users:login"))
+
+
+def profile(request, username):
+    user = Users.objects.get(username=username)
+    context = {
+        "user": user,
+    }
+    return render(request, "users/profile.html", context=context)
