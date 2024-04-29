@@ -5,18 +5,20 @@
 <div class="row mt-3">
     <div class="col">
         <div class="profile-header d-flex align-items-center">
-            <button id="uploadBtn" style="background-color: transparent; opacity: 100%;">
+            <button id="uploadBtn" style="background-color: transparent; opacity: 100%; border-radius:50%; border: solid 2px black;">
                 {% if user.avatar %}
-                    <img id="previewImg" src="/media/{{ user.avatar }}" width="168" height="168">
+                    <img id="previewImg" style="border-radius: 50%;" src="/media/{{ user.avatar }}" width="168" height="168">
                 {% else %}
-                    <img id="previewImg" src="{% static "images/User-avatar.svg.png" %}" width="168" height="168">
+                    <img id="previewImg" style="border-radius: 50%;" src="{% static "images/User-avatar.svg.png" %}" width="168" height="168">
                 {% endif %}
             </button>
             <input type="file" id="fileInput" style="display: none;">
             <div>
                 <h1 class="profile-name" style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
                 <p class="profile-bio" id="shortInf" style="margin-left:30px;">{% if user.user_profile.small_info %}{{ user.user_profile.small_info }}{% else %}No information{% endif %}
+                    {% if request.user.username == user.username %}
                     <button id="showBlock" class="btn btn-primary" style="width:px; height:20px;"></button>
+                    {% endif %}
                 </p>
                 <div id="hiddenBlock" style="display: none; margin-left:30px;">
                     <textarea type="text" id="textInput"></textarea>
@@ -27,20 +29,38 @@
     </div>
 </div>
 <hr>
-<div class="profile-stats">
+<div style="position: absolute; margin-left: 568px;" class="profile-stats">
     <div class="stat">
-        <span class="stat-value">1000</span>
-        <span class="stat-label">Друзей</span>
-    </div>
-    <div class="stat">
-        <span class="stat-value">500</span>
-        <span class="stat-label">Подписчиков</span>
-    </div>
-    <div class="stat">
-        <span class="stat-value">300</span>
-        <span class="stat-label">Фотографий</span>
+        <div class="rounded-5 align-items-center" style="background-color: #505050; margin-left:30px; width: 370px; height: 200px;">
+            <span class="m-3" style="color: white;"><b>Friends</b> <span style="color:grey;">{{ user.friends.count }}</span></span>
+            {% if user.friends %}
+            <div style="margin-left: 18px;">
+                {% for friend in user.friends.all %}
+                {% if forloop.counter <= 8%}
+                    <a href="{% url 'users:profile' friend.username %}" style="opacity: 100%; background: transparent;">
+                        <img id="previewImg" style="border-radius: 50%; margin-left: 10px; margin-top: 10px; border: solid 2px black;" src="/media/{{ friend.avatar }}" width="64" height="64">
+                    </a>
+                {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
+<div style="width: 540px; height: 200px; background: #505050;" class="rounded-5">
+    <div>
+        <a href="/media/{{ user.avatar }}">
+            <img class="m-3 rounded-3" style="border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
+        </a>
+        <a href="/media/{{ user.avatar }}">
+            <img class="rounded-3" style="position: relative; right:16px; border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
+        </a>  
+        <a href="/media/{{ user.avatar }}">
+            <img class="rounded-3" style="position: relative; right:16px; border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
+        </a>
+    </div>
+</div>
+<hr/>
 <div class="profile-posts">
     <h2>Последние посты</h2>
     <div class="post">

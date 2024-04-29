@@ -23,6 +23,9 @@ fileInput.addEventListener('change', function() {
             processData: false,
             contentType: false,
             success: function(data) {
+                if (data.message != "Your file is too big") {
+                    document.getElementById('previewImg').src = imageUrl;
+                }
                 successMessage.html(data.message);
                 successMessage.fadeIn(400);
                 // Через 7сек убираем сообщение
@@ -34,7 +37,6 @@ fileInput.addEventListener('change', function() {
                 console.log("Error")
             }
         });
-        document.getElementById('previewImg').src = imageUrl;
     }
 });
 
@@ -49,7 +51,9 @@ $(document).ready(function() {
             url: "http://127.0.0.1:8000/users/profile/edit-short-inf/",
             data: {"text": text},
             success: function(data) {
-                $("#shortInf").text(text)
+                if (data.message != "Your text is too big") {
+                    $("#shortInf").text(text) 
+                }
                 successMessage.html(data.message);
                 successMessage.fadeIn(400);
                 setTimeout(function () {

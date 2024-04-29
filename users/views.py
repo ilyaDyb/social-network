@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from users.models import UserProfile, Users
+from users.models import Friendship, UserProfile, Users
 
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
@@ -72,6 +72,9 @@ def profile(request, username):
 def edit_profile_img(request):
     if request.method == "POST":
         image = request.FILES.get("file")
+        if image.size > 1048576:
+            response = {"message": "Your file is too big"}
+            return JsonResponse(response)
         user = Users.objects.get(id=request.user.id)
         if user.avatar:
             user.avatar.delete()
@@ -89,14 +92,28 @@ def edit_profile_img(request):
 def edit_short_inf(request):
     if request.method == "POST":
         text = request.POST.get("text")
-        print(text)
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-            user_profile.small_info = text
-            user_profile.save()
-            return JsonResponse({"message": "Success"})
-        except Exception as ex:
-            print(ex)
-            return JsonResponse({"message": "Error"})
+        if not len(text) >= 257:
+            try:
+                user_profile = UserProfile.objects.get(user=request.user)
+                user_profile.small_info = text
+                user_profile.save()
+                return JsonResponse({"message": "Success"})
+            except Exception as ex:
+                print(ex)
+                return JsonResponse({"message": "Error"})
+        else:
+            return JsonResponse({"message": "Your text is too big"})
     else:
         return HttpResponse(status=404)
+    
+@login_required
+def friends(request, username):
+    # user1 = Users.objects.get(username="test3")
+    # user2 = Users.objects.get(username="test2")
+    # print(user1.username, user2.username)
+    # # Friendship.objects.create(from_user=user1, to_user=user2, status="accepted")
+    # friend = Friendship.objects.get(pk=1)
+    # print(friend)
+    # print(user1.friends.all())
+    
+    return render(request, "users/friends.html",)
