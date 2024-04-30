@@ -66,3 +66,26 @@ $(document).ready(function() {
         });
     });
 });
+$(document).ready(function() {
+    $("#sendRequest").click(function(event) {
+        event.preventDefault();
+
+        var url = $(this).attr("href");
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {},
+            success: function(data) {
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Error:", textStatus, errorThrown);
+            }
+        });
+    });
+});

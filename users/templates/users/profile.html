@@ -20,6 +20,11 @@
                     <button id="showBlock" class="btn btn-primary" style="width:px; height:20px;"></button>
                     {% endif %}
                 </p>
+                {% if request.user.username != user.username %}
+                    {% if user not in request.user.friends.all %}
+                        <a href="{% url "users:send_friend_request" user.username %}"id="sendRequest" class="btn btn-dark" style="margin-left:30px;">To add friend</a>
+                    {% endif %}
+                {% endif %}
                 <div id="hiddenBlock" style="display: none; margin-left:30px;">
                     <textarea type="text" id="textInput"></textarea>
                     <button id="saveButton" style="position:relative; bottom:7px;">Save</button>

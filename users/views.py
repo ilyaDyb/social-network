@@ -4,9 +4,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.db.models import Q
+from django.db import transaction
 
-from users.models import Friendship, UserProfile, Users
-
+from .models import Friendship, UserProfile, Users
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 
@@ -115,5 +116,43 @@ def friends(request, username):
     # friend = Friendship.objects.get(pk=1)
     # print(friend)
     # print(user1.friends.all())
-    
-    return render(request, "users/friends.html",)
+    friends = Users.objects.get(username=username).friends.all()
+    find = request.GET.get("find")
+    section = request.GET.get("section")
+    if find:
+        friends = friends.filter(
+            Q(username__icontains=find) | Q(first_name__icontains=find) | Q(last_name__icontains=find)
+        )
+    if section == "requests":
+        if request.user.username == username:
+            from_user_ids = Friendship.objects.filter(to_user=request.user, status="pending").values_list('from_user', flat=True)
+            friends = Users.objects.filter(username__in=from_user_ids)
+            print(friends)
+            
+    print(friends)
+    context = {
+        "friends": friends,
+        "username": username,
+    }
+
+    return render(request, "users/friends.html", context=context)
+
+
+@login_required()
+@csrf_exempt
+def send_friend_request(request, username):
+    if request.method == "POST":
+        try:
+            user = Users.objects.get(username=username)
+        except Users.DoesNotExist:
+            return JsonResponse({"message": "User does not exist"}, status=404)
+        if Friendship.objects.filter(from_user=request.user, to_user=user, status="pending").exists():
+            return JsonResponse({"message": "Friend request already sent"}, status=200)
+        else:
+            with transaction.atomic():
+                friendship, created = Friendship.objects.get_or_create(from_user=request.user, to_user=user, status="pending")
+                if not created:
+                    friendship.status = "accepted"
+                    friendship.save()
+            return JsonResponse({"message": "Success"})
+    return JsonResponse({"message": "Invalid method"}, status=405)
