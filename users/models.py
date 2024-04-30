@@ -23,10 +23,17 @@ class Users(AbstractUser):
     first_name = models.CharField(max_length=20, blank=False, null=False)
     last_name = models.CharField(max_length=20, blank=False, null=False)
     avatar = models.ImageField(upload_to="users_avatars", blank=True, null=True, default="User-avatar.svg.png")
-    friends = models.ManyToManyField("self", through="Friendship")
+    friends = models.ManyToManyField("self", through="Friendship", related_name="user_friends")
 
     class Meta:
         db_table = "Users"
+
+    @property
+    def accepted_friends(self):
+        from_user_friendships = Friendship.objects.filter(from_user=self, status='accepted').values_list('to_user', flat=True)
+        to_user_friendships = Friendship.objects.filter(to_user=self, status='accepted').values_list('from_user', flat=True)
+        friends_ids = set(list(from_user_friendships) + list(to_user_friendships))
+        return Users.objects.filter(id__in=friends_ids)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="user_profile")

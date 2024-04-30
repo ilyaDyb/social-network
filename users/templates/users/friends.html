@@ -19,19 +19,27 @@
                         {{ friend.first_name }} {{ friend.last_name }} <b>@{{friend.username}}</b>
                     </a>
                 </div>
-                <a href="#" style="position: relative; bottom: 70px; left: 125px;">Write a message</a>
+                    <a href="#" style="position: relative; bottom: 70px; left: 125px;">Write a message</a>
+                {% if flag %}
+                    <a id="acceptRequest" href="{% url "users:accept_friend_request" friend.username %}" class="btn btn-success"
+                    style="position: relative; bottom: 70px; left: 125px;">Accept</a>
+                    {% csrf_token %}
+                {% endif %}
                 <hr style="margin-top: 5px; margin-bottom: 5px;">
                 {% endfor %}
             </div>
         </div>
         <div class="col-md-3">
             <div class="rounded-5" style="height: auto;">
-                <!-- Ваш второй блок с элементами меню -->
                 <div class="list-group">
                     <form action="{% url "users:friends" username %}" method="get">
-                        <a class="list-group-item list-group-item-action">My friends</a>
+                        <a href="{% url "users:friends" username %}" class="list-group-item list-group-item-action">My friends</a>
                         <a href="?section=requests" class="list-group-item list-group-item-action">Friend Requests</a>
-                        <a class="list-group-item list-group-item-action">Search Friends</a>
+                        <a id="showBlock" class="list-group-item list-group-item-action">Search Friends</a>
+                        <div id="hiddenBlock" style="display: none; margin-top:10px;">
+                            <input type="text" name="find_all" id="textInput">
+                            <button class="btn-dark" style="">Find</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -42,4 +50,6 @@
 
 
 {% endblock content %}
-
+{% block scripts %}
+<script src="{% static "users/friends.js" %}"></script>
+{% endblock scripts %}

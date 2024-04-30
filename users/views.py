@@ -12,6 +12,16 @@ from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 
 def login(request):
+    # for i in range(100, 201):
+    #     username = f"test{i}"
+    #     last_name = f"test{i}"
+    #     first_name = f"test{i}"
+    #     password = "qwertyuiop2014"
+    #     email = f"test{i}@mail.ru"
+    #     user = Users.objects.create(username=username, last_name=last_name, first_name=first_name, email=email)
+    #     user.set_password(password)
+    #     user.save()
+    #     print(f"User: {username} was created")
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
@@ -62,8 +72,10 @@ def logout(request):
 @login_required
 def profile(request, username):
     user = Users.objects.get(username=username)
+    friends = user.accepted_friends
     context = {
         "user": user,
+        "friends": friends
     }
     return render(request, "users/profile.html", context=context)
 
@@ -109,36 +121,42 @@ def edit_short_inf(request):
     
 @login_required
 def friends(request, username):
-    # user1 = Users.objects.get(username="test3")
-    # user2 = Users.objects.get(username="test2")
-    # print(user1.username, user2.username)
-    # # Friendship.objects.create(from_user=user1, to_user=user2, status="accepted")
-    # friend = Friendship.objects.get(pk=1)
-    # print(friend)
-    # print(user1.friends.all())
-    friends = Users.objects.get(username=username).friends.all()
+    flag = None
+    friends = request.user.accepted_friends
     find = request.GET.get("find")
+    find_all = request.GET.get("find_all")
     section = request.GET.get("section")
+
     if find:
         friends = friends.filter(
             Q(username__icontains=find) | Q(first_name__icontains=find) | Q(last_name__icontains=find)
         )
-    if section == "requests":
+
+    elif section == "requests":
         if request.user.username == username:
-            from_user_ids = Friendship.objects.filter(to_user=request.user, status="pending").values_list('from_user', flat=True)
-            friends = Users.objects.filter(username__in=from_user_ids)
+            friend_requests = Friendship.objects.filter(to_user=request.user, status="pending")
+            friend_user_ids = friend_requests.values_list('from_user_id', flat=True)
+            friends = Users.objects.filter(id__in=friend_user_ids)
+            flag = True
+            print(Friendship.objects.all().last())
             print(friends)
-            
-    print(friends)
+
+    elif find_all:
+        friends = Users.objects.filter(
+            Q(username__icontains=find_all) | Q(first_name__icontains=find_all) | Q(last_name__icontains=find_all)
+        )
+
+
+
     context = {
         "friends": friends,
         "username": username,
+        "flag": flag,
     }
-
     return render(request, "users/friends.html", context=context)
 
 
-@login_required()
+@login_required
 @csrf_exempt
 def send_friend_request(request, username):
     if request.method == "POST":
@@ -146,13 +164,29 @@ def send_friend_request(request, username):
             user = Users.objects.get(username=username)
         except Users.DoesNotExist:
             return JsonResponse({"message": "User does not exist"}, status=404)
-        if Friendship.objects.filter(from_user=request.user, to_user=user, status="pending").exists():
-            return JsonResponse({"message": "Friend request already sent"}, status=200)
+        if not Friendship.objects.filter(from_user=request.user, to_user=user, status="pending").exists():
+            Friendship.objects.create(from_user=request.user, to_user=user, status="pending")
+            return JsonResponse({"message": "Friend request sent"})
         else:
-            with transaction.atomic():
-                friendship, created = Friendship.objects.get_or_create(from_user=request.user, to_user=user, status="pending")
-                if not created:
-                    friendship.status = "accepted"
-                    friendship.save()
-            return JsonResponse({"message": "Success"})
+            return JsonResponse({"message": "Friend request already sent"}, status=400)
+    return JsonResponse({"message": "Invalid method"}, status=405)
+
+
+@login_required
+@csrf_exempt
+def accept_friend_request(request, username):
+    if request.method == "POST":
+        try:
+            to_user = request.user
+            from_user = Users.objects.get(username=username)
+
+            friendship = Friendship.objects.get(from_user=from_user, to_user=to_user)
+        except Friendship.DoesNotExist:
+            return JsonResponse({"message": "Friendship request does not exist"}, status=404)
+        if friendship.status == "pending":
+            friendship.status = "accepted"
+            friendship.save()
+            return JsonResponse({"message": "Friend request accepted"})
+        else:
+            return JsonResponse({"message": "Friend request is not pending"}, status=400)
     return JsonResponse({"message": "Invalid method"}, status=405)

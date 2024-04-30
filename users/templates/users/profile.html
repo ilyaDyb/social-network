@@ -37,10 +37,10 @@
 <div style="position: absolute; margin-left: 568px;" class="profile-stats">
     <div class="stat">
         <div class="rounded-5 align-items-center" style="background-color: #505050; margin-left:30px; width: 370px; height: 200px;">
-            <span class="m-3" style="color: white;"><b>Friends</b> <span style="color:grey;">{{ user.friends.count }}</span></span>
+            <span class="m-3" style="color: white;"><b>Friends</b> <span style="color:grey;">{{ friends.count }}</span></span>
             {% if user.friends %}
             <div style="margin-left: 18px;">
-                {% for friend in user.friends.all %}
+                {% for friend in friends %}
                 {% if forloop.counter <= 8%}
                     <a href="{% url 'users:profile' friend.username %}" style="opacity: 100%; background: transparent;">
                         <img id="previewImg" style="border-radius: 50%; margin-left: 10px; margin-top: 10px; border: solid 2px black;" src="/media/{{ friend.avatar }}" width="64" height="64">
