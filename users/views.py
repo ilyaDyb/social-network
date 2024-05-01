@@ -5,23 +5,12 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.db.models import Q
-from django.db import transaction
 
 from .models import Friendship, UserProfile, Users
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 
 def login(request):
-    # for i in range(100, 201):
-    #     username = f"test{i}"
-    #     last_name = f"test{i}"
-    #     first_name = f"test{i}"
-    #     password = "qwertyuiop2014"
-    #     email = f"test{i}@mail.ru"
-    #     user = Users.objects.create(username=username, last_name=last_name, first_name=first_name, email=email)
-    #     user.set_password(password)
-    #     user.save()
-    #     print(f"User: {username} was created")
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
@@ -73,9 +62,11 @@ def logout(request):
 def profile(request, username):
     user = Users.objects.get(username=username)
     friends = user.accepted_friends
+    photos = user.photos.all().order_by("-id")[0:3]
     context = {
         "user": user,
-        "friends": friends
+        "friends": friends,
+        "photos": photos,
     }
     return render(request, "users/profile.html", context=context)
 
@@ -147,8 +138,6 @@ def friends(request, username):
         friends = Users.objects.filter(
             Q(username__icontains=find_all) | Q(first_name__icontains=find_all) | Q(last_name__icontains=find_all)
         )
-
-
 
     context = {
         "friends": friends,

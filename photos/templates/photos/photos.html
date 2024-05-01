@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Photos{% endblock title %}
+{% block content %}
+<div class="container mt-3">
+    {% if message %}
+    <h1>{{ message }}</h1>
+    {% else %}
+    {% if request.user.username == username %}
+    <h1>Photos    <button id="uploadBtn" class="btn btn-primary">Load photo</button></h1>
+    <input type="file" id="fileInput" style="display: none;">
+    {% else %}
+    <h1>Photos</h1>
+    <div>
+        {% for photo in photos %}
+            <a href="/media/{{ photo.photo }}">
+                <img class="rounded-3" style="border: 2px solid black; margin-top:10px;" id="previewImg" src="/media/{{ photo.photo }}" width="232.7" height="225">
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+    {% endif %}
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "photos/load_photo.js" %}"></script>
+{% endblock scripts %}

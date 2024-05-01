@@ -26,6 +26,7 @@ urlpatterns = [
     path("", include("feed.urls", namespace="feed")),
     path("", HomeRedirectView.as_view(url='/feed/'), name="home_redirect"),
     path("", include("users.urls", namespace="users")),
+    path("", include("photos.urls", namespace="photos")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

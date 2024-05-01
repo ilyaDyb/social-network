@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'feed',
-    'users'
+    'users',
+    'photos',
+    'audios',
 ]
 
 MIDDLEWARE = [
@@ -129,4 +131,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.Users"
-LOGIN_URL = "users/login/"
+LOGIN_URL = "/login/"

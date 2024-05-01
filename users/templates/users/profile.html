@@ -54,17 +54,16 @@
 </div>
 <div style="width: 540px; height: 200px; background: #505050;" class="rounded-5">
     <div>
-        <a href="/media/{{ user.avatar }}">
-            <img class="m-3 rounded-3" style="border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
+        {% for photo in photos %}
+        <a href="/media/{{ photo.photo }}">
+            <img class="{% if forloop.counter == 1 %}m-3{% endif %} rounded-3" style=" {% if forloop.counter > 1 %}position: relative; right:16px;{% endif %} border: 2px solid black;" id="previewImg" src="/media/{{ photo.photo }}" width="166" height="166">
         </a>
-        <a href="/media/{{ user.avatar }}">
-            <img class="rounded-3" style="position: relative; right:16px; border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
-        </a>  
-        <a href="/media/{{ user.avatar }}">
-            <img class="rounded-3" style="position: relative; right:16px; border: 2px solid black;" id="previewImg" src="/media/{{ user.avatar }}" width="166" height="166">
-        </a>
+
+        {% endfor %}
+
     </div>
 </div>
+<a href="{% url "photos:photos" user.username %}" class="btn btn-dark">View all</a>
 <hr/>
 <div class="profile-posts">
     <h2>Последние посты</h2>
