@@ -122,7 +122,11 @@ def edit_short_inf(request):
 @login_required
 def friends(request, username):
     flag = None
-    friends = request.user.accepted_friends
+    try:
+        user = Users.objects.get(username=username)
+    except Users.DoesNotExist:
+        return render(request, "users/friends.html", context={"message": "User does not exist"})
+    friends = user.accepted_friends
     find = request.GET.get("find")
     find_all = request.GET.get("find_all")
     section = request.GET.get("section")
@@ -133,13 +137,11 @@ def friends(request, username):
         )
 
     elif section == "requests":
-        if request.user.username == username:
+        if request.user.username:
             friend_requests = Friendship.objects.filter(to_user=request.user, status="pending")
             friend_user_ids = friend_requests.values_list('from_user_id', flat=True)
             friends = Users.objects.filter(id__in=friend_user_ids)
             flag = True
-            print(Friendship.objects.all().last())
-            print(friends)
 
     elif find_all:
         friends = Users.objects.filter(

@@ -37,7 +37,7 @@
 <div style="position: absolute; margin-left: 568px;" class="profile-stats">
     <div class="stat">
         <div class="rounded-5 align-items-center" style="background-color: #505050; margin-left:30px; width: 370px; height: 200px;">
-            <span class="m-3" style="color: white;"><b>Friends</b> <span style="color:grey;">{{ friends.count }}</span></span>
+            <span class="m-3" style="color: white;"><b><a href="{% url "users:friends" user.username %}">Friends</a></b> <span style="color:grey;">{{ friends.count }}</span></span>
             {% if user.friends %}
             <div style="margin-left: 18px;">
                 {% for friend in friends %}

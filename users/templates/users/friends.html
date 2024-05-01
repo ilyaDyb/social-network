@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Friends{% endblock title %}
 {% block content %}
 <div class="container mt-3">
+    {% if not message %}
     <div class="row">
         <div class="col-md-9">
             <div class="rounded-5" style="height: auto;">
 
-                <form action="{% url "users:friends" user.username %}" method="get">
+                <form action="{% url "users:friends" username %}" method="get">
                     <span>Search my friends: </span>
                     <input type="text" name="find" id="id_find">
                 </form>
@@ -46,6 +48,10 @@
         </div>
     </div>
 </div>
+{% else %}
+<h1>{{ message }}</h1>
+{% endif %}
+
 
 
 

@@ -25,6 +25,9 @@ class Users(AbstractUser):
     avatar = models.ImageField(upload_to="users_avatars", blank=True, null=True, default="User-avatar.svg.png")
     friends = models.ManyToManyField("self", through="Friendship", related_name="user_friends")
 
+    # PRIVACY_CHOICE = (("yes", "yes"), ("no", "no"))
+    # privacy = models.CharField(max_length=3, choices=PRIVACY_CHOICE, default="no")
+
     class Meta:
         db_table = "Users"
 
@@ -65,46 +68,3 @@ class Friendship(models.Model):
 
     def get_absolute_url(self):
         return reverse("Friendship_detail", kwargs={"pk": self.pk})
-
-class Photo(models.Model):
-    user = models.ForeignKey(to=Users, on_delete=models.CASCADE, related_name="photo")
-
-    photo = models.FileField(upload_to="users_files/users_photos/", blank=True, null=True)
-    class Meta:
-        verbose_name = ("Photo")
-        verbose_name_plural = ("Photos")
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("Photo_detail", kwargs={"pk": self.pk})
-    
-# class Settings(models.Model):
-#     PRIVACY_CHOICE = (("yes", "yes"), ("no", "no"))
-#     user = models.ForeignKey(to=Users, on_delete=models.CASCADE)
-#     privacy = models.CharField(max_length=3, choices=PRIVACY_CHOICE, default="no")
-
-#     class Meta:
-#         verbose_name = ("Settings")
-#         verbose_name_plural = ("Settingss")
-
-#     def __str__(self):
-#         return f"Settings for user: {self.user.id}"
-
-#     def get_absolute_url(self):
-#         return reverse("Settings_detail", kwargs={"pk": self.pk})
-
-
-# class Audio(models.Model):
-#     title = models.CharField(max_length=35, null=False)
-#     audio_file = models.FileField(upload_to="users_files/audio_files/")
-#     class Meta:
-#         verbose_name = _("Audio")
-#         verbose_name_plural = _("Audios")
-
-#     def __str__(self):
-#         return self.title
-
-#     def get_absolute_url(self):
-#         return reverse("Audio_detail", kwargs={"pk": self.pk})
