@@ -41,3 +41,18 @@ def load_photo(request):
 
     else:
         return JsonResponse({"message": "Bad request"}, status=405)
+    
+
+@login_required
+@csrf_exempt
+def delete_photo(request):
+    if request.method == "POST":
+        photo_id = request.POST.get("photo_id")
+        try:
+            photo = Photo.objects.get(pk=photo_id)
+            photo.delete()
+            return JsonResponse({"message": "Success"}, status=200)
+        except Photo.DoesNotExist:
+            return JsonResponse({"message": "Does not exist"}, status=404)
+    else:
+        return JsonResponse({"message": "Invalid request method"}, status=405)

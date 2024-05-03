@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Profile{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "photos/style.css" %}">
+{% endblock styles %}
 {% block content %}
 <div class="row mt-3">
     <div class="col">
@@ -52,17 +55,25 @@
         </div>
     </div>
 </div>
+
 <div style="width: 540px; height: 200px; background: #505050;" class="rounded-5">
     <div>
         {% for photo in photos %}
-        <a href="/media/{{ photo.photo }}">
-            <img class="{% if forloop.counter == 1 %}m-3{% endif %} rounded-3" style=" {% if forloop.counter > 1 %}position: relative; right:16px;{% endif %} border: 2px solid black;" id="previewImg" src="/media/{{ photo.photo }}" width="166" height="166">
+        <a href="#" class="photo-link" data-image="{{ photo.photo.url }}" data-photo-id="{{ photo.id }}">
+            <img class="{% if forloop.counter == 1 %}m-3{% endif %} rounded-3" style=" {% if forloop.counter > 1 %}position: relative; right:16px;{% endif %} border: 2px solid black;" id="previewImg" src="{{ photo.photo.url }}" width="166" height="166">
         </a>
-
         {% endfor %}
-
     </div>
 </div>
+
+<div id="photoModal" class="modal">
+    <span class="close-modal">&times;</span>]
+    <img id="modalPhoto" src="" alt="Photo">
+    {% if request.user.username == user.username %}
+        <a class="btn btn-danger delete-photo-btn" style="position: absolute; bottom: 0; left: 0;">Delete photo</a>
+    {% endif %}
+</div>
+
 <a href="{% url "photos:photos" user.username %}" class="btn btn-dark">View all</a>
 <hr/>
 <div class="profile-posts">
@@ -86,4 +97,5 @@
 {% endblock content %}
 {% block scripts %}
 <script src="{% static "users/profile.js" %}"></script>
+<script src="{% static "photos/open_photo.js" %}"></script>
 {% endblock scripts %}

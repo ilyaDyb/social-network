@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Photos{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "photos/style.css" %}">
+{% endblock styles %}
 {% block content %}
 <div class="container mt-3">
     {% if message %}
@@ -11,17 +14,28 @@
     <input type="file" id="fileInput" style="display: none;">
     {% else %}
     <h1>Photos</h1>
+    {% endif %}
+    
     <div>
         {% for photo in photos %}
-            <a href="/media/{{ photo.photo }}">
-                <img class="rounded-3" style="border: 2px solid black; margin-top:10px;" id="previewImg" src="/media/{{ photo.photo }}" width="232.7" height="225">
-            </a>
+        <a href="#" class="photo-link" data-image="{{ photo.photo.url }}" data-photo-id="{{ photo.id }}">
+            <img class="photo rounded-3" style="border: 2px solid black; margin-top:10px;" src="{{ photo.photo.url }}" width="232.7" height="225">
+        </a>
         {% endfor %}
     </div>
-    {% endif %}
+    
+    <div id="photoModal" class="modal">
+            <span class="close-modal">&times;</span>]
+            <img id="modalPhoto" src="" alt="Photo">
+            {% if request.user.username == username %}
+                <a class="btn btn-danger delete-photo-btn" style="position: absolute;bottom: 0; left: 0;">Delete photo</a>
+            {% endif %}
+    </div>
+    
 </div>
     {% endif %}
 {% endblock content %}
 {% block scripts %}
 <script src="{% static "photos/load_photo.js" %}"></script>
+<script src="{% static "photos/open_photo.js" %}"></script>
 {% endblock scripts %}
