@@ -1,0 +1,11 @@
+
+.audio-player {
+    width: 500px; /* Ширина плеера */
+  }
+  
+  /* Стилизация элемента <audio> */
+  .audio-player audio {
+    width: 100%; /* Заполнение всей доступной ширины контейнера */
+    height: 40px; /* Высота плеера */
+    background-color: black;
+  }

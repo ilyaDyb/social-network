@@ -8,7 +8,7 @@ $(document).ready(function() {
     $(".photo-link").click(function(event) {
         event.preventDefault();
         var imageUrl = $(this).data("image");
-        photoId = $(this).data("photo-id"); // Сохраняем ID фотографии
+        photoId = $(this).data("photo-id");
         modalImg.attr("src", imageUrl);
         modal.show();
     });
@@ -23,10 +23,10 @@ $(document).ready(function() {
             console.log("if")
             $.ajax({
                 type: "POST",
-                url: "http://127.0.0.1:8000/photos/delete/", // Укажите URL для удаления фотографии по ID на сервере
-                data: { photo_id: photoId }, // Отправляем ID фотографии на сервер
+                url: "http://127.0.0.1:8000/photos/delete/",
+                data: { photo_id: photoId },
                 success: function(data) {
-                    modal.hide(); // Скрыть модальное окно после успешного удаления
+                    modal.hide();
                     alert("Photo deleted successfully.");
                 },
                 error: function(xhr, status, error) {

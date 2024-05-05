@@ -22,11 +22,11 @@
               <input id="search" type="text">
             </li>
           </ul>
-          <div style="text-align: center; margin-left:27%">
+          
+          <div style="text-align: center; margin-left:68%; position: absolute;">
             <a class="nav-link" href="" style="display: inline-block; margin-right:20px;">Settings</a>
             <a class="nav-link" href="{% url "users:logout" %}" style="display: inline-block;">Logout</a>
           </div>
-        
         </div>
       </nav>
       <div class="container">
@@ -39,7 +39,7 @@
                     <li class="list-group-item"><a href="{% url "users:friends" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Friends</a></li>                    
                     <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Groups</a></li>
                     <li class="list-group-item"><a href="{% url "photos:photos" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Photos</a></li>
-                    <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Music</a></li>
+                    <li class="list-group-item"><a href="{% url "audios:audios" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Music</a></li>
                     <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Video</a></li>
                 </ul>
             </div>

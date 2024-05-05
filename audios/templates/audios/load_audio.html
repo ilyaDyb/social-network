@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Load audio{% endblock title %}
+{% block content %}
+<div class="mt-3">
+    <h1>Load audio</h1>
+    <form action="" method="post" class="form-control" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+        {% endif %}
+        <input type="text" name="title" id="id_title" placeholder="Enter title for your track" required>
+        <hr>
+        <input type="text" name="author" id="id_author" placeholder="Enter author" required>
+        <input type="file" name="audio_file" id="id_audio_file" required>
+        <hr>
+        <button type="submit" class="btn btn-outline-success">Load</button>
+    </form>
+
+</div>
+{% endblock content %}

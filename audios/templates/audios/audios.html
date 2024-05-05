@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "audios/style.css" %}">
+{% endblock styles %}
+{% block title %}Audios{% endblock title %}
+{% block content %}
+<div class="mt-3">
+    <h1>Audio of {{ username }}</h1>
+    <div class="container" style="display: flex;">
+        <form action="{% url "audios:audios" username %}" method="get">
+            <div class="input-group mb-3">
+                <input type="text" name="search" class="form-control" placeholder="Find tracks">
+                <button type="submit" class="btn btn-outline-secondary">Search</button>
+            </div>
+        </form>
+        <input class="volume-slider" type="range" min="0" max="1" step="0.1" value="0.5" style="margin-bottom:20px; margin-left:15px;">
+        <a href="{% url "audios:load_audio" %}" class="btn btn-outline-info" style="margin-left:auto; max-height:40px;">Load audio</a>
+    </div>
+    <hr>
+    {% if flag == "search" %}
+    {% for audio in audios %}
+    <div class="col-7 audio-player" style="margin-top:10px;">
+        <span><b>{{ audio.author }}</b> {{ audio.title }}</span>
+        <div style="display: flex;">
+            <audio controls class="audio-element" data-audio-id="{{ audio.id }}">
+                <source src="{{ audio.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button class="btn btn-outline-success delete-audio"
+             data-audio-id="{{ audio.id }}">+</button>
+
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    {% for audio in audios %}
+    <div class="col-7 audio-player" style="margin-top:10px;">
+        <span><b>{{ audio.audio.author }}</b> {{ audio.audio.title }}</span>
+        <div style="display: flex;">
+            <audio controls class="audio-element" data-audio-id="{{ audio.audio.id }}">
+                <source src="{{ audio.audio.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button class="btn btn-outline-danger delete-audio"
+            data-audio-id="{{ audio.audio.id }}">-</button>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% endif %}
+</div>
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "audios/audios.js" %}"></script>
+{% endblock scripts %}

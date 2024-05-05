@@ -1,5 +1,5 @@
 const fileInput = $("#fileInput");
-const successMessage = $("#jq-notification");
+var successMessage = $("#jq-notification");
 const uploadBtn = $("#uploadBtn");
 
 uploadBtn.on('click', function() {
