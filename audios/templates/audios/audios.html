@@ -21,13 +21,13 @@
     {% if flag == "search" %}
     {% for audio in audios %}
     <div class="col-7 audio-player" style="margin-top:10px;">
-        <span><b>{{ audio.author }}</b> {{ audio.title }}</span>
+        <span>{{ audio.title }} - <b>{{ audio.author }}</b></span>
         <div style="display: flex;">
             <audio controls class="audio-element" data-audio-id="{{ audio.id }}">
                 <source src="{{ audio.audio_file.url }}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button class="btn btn-outline-success delete-audio"
+            <button class="btn btn-outline-success add-audio"
              data-audio-id="{{ audio.id }}">+</button>
 
         </div>
@@ -36,14 +36,19 @@
     {% else %}
     {% for audio in audios %}
     <div class="col-7 audio-player" style="margin-top:10px;">
-        <span><b>{{ audio.audio.author }}</b> {{ audio.audio.title }}</span>
+        <span>{{ audio.audio.title }} <b>{{ audio.audio.author }}</b> </span>
         <div style="display: flex;">
             <audio controls class="audio-element" data-audio-id="{{ audio.audio.id }}">
                 <source src="{{ audio.audio.audio_file.url }}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button class="btn btn-outline-danger delete-audio"
-            data-audio-id="{{ audio.audio.id }}">-</button>
+            {% if username == request.user.username %}
+                <button class="btn btn-outline-danger delete-audio"
+                data-audio-id="{{ audio.audio.id }}">-</button>
+            {% else %}
+                <button class="btn btn-outline-success add-audio"
+                data-audio-id="{{ audio.id }}">+</button>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

@@ -73,3 +73,17 @@ def add_audio(request):
         return JsonResponse({"message": "You successfuly add this track"})
     else:
         return JsonResponse({"message": "Invalid method"}, status=405)
+    
+@csrf_exempt
+def delete_audio(request):
+    if request.method == "POST":
+        audio_id = request.POST.get("audioId")
+        try:
+            audio = Audio.objects.get(pk=audio_id)
+            user_audio = UserAudio.objects.get(user=request.user, audio=audio)
+            user_audio.delete()
+            return JsonResponse({"message": "You delete this track successfully"})
+        except Audio.DoesNotExist:
+            return JsonResponse({"message": "No such track in database"})
+    else:
+        return JsonResponse({"message": "Invalid method"})

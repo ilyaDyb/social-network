@@ -16,7 +16,7 @@ class AudioForm(forms.Form):
     
     def clean_author(self):
         author = self.cleaned_data["author"]
-        if len(author) > 20:
+        if len(author) > 30:
             raise forms.ValidationError("Length of author must be smaller then 20 char")
         return author
     
