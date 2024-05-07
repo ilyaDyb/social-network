@@ -1,0 +1,10 @@
+This is my pet-project.
+If you want to start it:
+1. git clone https://github.com/ilyaDyb/social-network.git (in your folder)
+2. Install and activate your env
+3. Then write: pip install -r requirements.txt
+4. You should to change database's settings for your database (preferably not sqlite3)
+5. python3 manage.py migrate
+6. .env write: REPLICATE_API_TOKEN=<paste-your-token-here> with python-dotenv or other way. (You can get it after authorization on https://replicate.com/)
+7. Then you can to use full functional in the application
+python3 manage.py runserver
