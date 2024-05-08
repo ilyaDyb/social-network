@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Apps{% endblock title %}
+{% block content %}
+<div class="container mt-3">
+    <h1>AI generate images</h1>
+    <span>Write your prompt, tap submit and wait...</span>
+    <h6>Try it: <b>computer developer sitting with a laptop on the beach and drinking coconuts</b></h6>
+    <hr>
+    <div class="row">
+        <div class="col-md-3">
+            <h3 for="prompt">Your prompt:</h3>
+            <textarea name="prompt" id="prompt" style="height: 200px; margin-top: 5px;"></textarea>
+            <button class="btn btn-info" id="generate_img" type="submit">Submit</button>
+        </div>
+        
+        <div class="col-md-9">
+            <h3>Output:</h3>
+            <hr>
+            <img src="" id="result_image" alt=""> 
+            <div class="" id="spinner" role="status" style="margin-top:10px;"></div>
+        </div>
+    </div>
+    <hr>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "apps/ai_images.js" %}"></script>
+{% endblock scripts %}

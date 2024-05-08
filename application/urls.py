@@ -28,6 +28,7 @@ urlpatterns = [
     path("", include("users.urls", namespace="users")),
     path("", include("photos.urls", namespace="photos")),
     path("", include("audios.urls", namespace="audios")),
+    path("apps/", include("apps.urls", namespace="apps")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

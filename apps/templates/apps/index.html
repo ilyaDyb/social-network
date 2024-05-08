@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Apps{% endblock title %}
+{% block content %}
+<div class="container mt-3">
+    <h1>Apps</h1>
+    <hr>
+    <div>
+        <a href="{% url "apps:ai_images" %}" class="" style="display: inline-block;">
+            <img class="rounded-3" style="border: 2px solid black; margin-top:10px;" src="{% static "images/replicate.png" %}" width="232.7" height="225">
+            <span style="display: block;">AI generate images</span>
+        </a>
+
+    </div>
+ 
+</div>
+
+{% endblock content %}

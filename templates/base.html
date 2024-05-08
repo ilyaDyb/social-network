@@ -40,7 +40,7 @@
                     <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Groups</a></li>
                     <li class="list-group-item"><a href="{% url "photos:photos" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Photos</a></li>
                     <li class="list-group-item"><a href="{% url "audios:audios" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Music</a></li>
-                    <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Apps</a></li>
+                    <li class="list-group-item"><a href="{% url "apps:index" %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Apps</a></li>
                 </ul>
             </div>
             <div class="col-9">
