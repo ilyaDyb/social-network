@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Apps{% endblock title %}
+{% block content %}
+<div class="container mt-3">
+    <h1>Generate avatar Rick and Morty</h1>
+    <span>Just tap on the button and you get small information about the hero of serial and his photo!</span>
+    <hr>
+    <div class="row">
+        <div style="text-align: center;">
+
+            <button class="btn btn-info" id="generate" style="width: 100%;">Generate</button>
+        </div>
+        
+        <div class="col-md-4">
+            <hr>
+            
+            <img src="" id="result_image" alt=""> 
+            <div class="" id="spinner" role="status" style="margin-top:10px;"></div>
+        </div>
+        <div class="col-md-8" style="">
+            <hr>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Species</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="name" scope="row"></td>
+                    <td id="status"></td>
+                    <td id="species"></td>
+                    <td id="gender"></td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "apps/RandM_api.js" %}"></script>
+{% endblock scripts %}

@@ -19,11 +19,11 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from . import settings
 # from django.views.generic.base import RedirectView
-from feed.utils import HomeRedirectView
+from posts.utils import HomeRedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("feed.urls", namespace="feed")),
+    path("", include("posts.urls", namespace="posts")),
     path("", HomeRedirectView.as_view(url='/feed/'), name="home_redirect"),
     path("", include("users.urls", namespace="users")),
     path("", include("photos.urls", namespace="photos")),

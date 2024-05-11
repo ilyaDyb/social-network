@@ -1,8 +1,13 @@
 import http.client
+import json
 import os
 import replicate
 import http
+import requests
+import random
+
 from dotenv import load_dotenv
+from fake_useragent import UserAgent
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -19,7 +24,6 @@ def ai_images(request):
 @csrf_exempt
 def generate_image(request):
     if request.method == "POST":
-
         prompt = request.POST.get("prompt")
         load_dotenv()
         REPLICATE_API_TOKEN = os.getenv("REPLICATE_API_TOKEN")
@@ -34,5 +38,29 @@ def generate_image(request):
             }
         )
         return JsonResponse({"message": "success", "image": output}, status=http.client.OK)
+    else:
+        return JsonResponse({"message": "Bad request"}, status=400)
+    
+
+
+def avatar_rick_and_morty(request):
+    return render(request, "apps/generate_avatar_rick_and_morty.html")
+
+@csrf_exempt
+def avatar_rick_and_morty_generate(request):
+    if request.method == "POST":
+        try:
+            page = random.randint(0, 42)
+            url = f"https://rickandmortyapi.com/api/character?page={page}"
+            headers = {"user-agent": str(UserAgent.random)}
+            response = requests.get(url=url, headers=headers, timeout=60).json()
+            characters = random.randint(0, len(response["results"])-1)
+            character = response["results"][int(characters)]
+
+            data = {"name": character["name"], "status": character["status"], "species": character["species"],
+                    "gender": character["gender"], "src" :character["image"], "message": "Success"}
+            return JsonResponse(data, status=200)
+        except Exception as ex_:
+            return JsonResponse({"message": ex_}, status=500)
     else:
         return JsonResponse({"message": "Bad request"}, status=400)

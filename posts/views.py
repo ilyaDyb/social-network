@@ -4,4 +4,4 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def feed(request):
-    return render(request, "main/feed.html")
+    return render(request, "posts/feed.html")
