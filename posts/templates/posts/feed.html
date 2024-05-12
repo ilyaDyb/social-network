@@ -1,6 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Feed{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "posts/style.css" %}">
+{% endblock styles %}
 {% block content %}
-<h1>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate qui, dolorum quaerat quibusdam fugiat voluptatem! Ullam, consectetur. Provident culpa, mollitia natus autem at debitis qui ipsa ea ex vitae alias.</h1>
-
+<div class="row">
+    <div class="mt-3 col-md-8">
+        <h2>Последние посты</h2>
+        <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
+            <div class="container">
+                <div class="post-header" style="position: relative; top:10px;">
+                    <a href="{% url "users:profile" user.username %}">
+                        <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="50" height="50">
+                    </a>
+                    <a class="post-author-name" href="{% url "users:profile" user.username %}">Ilya Dybovsky</a>
+                    <span class="post-time">9th of May 18:29</span>
+                </div>
+                <div class="post-content" style="position: relative; top:10px;">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat quia reiciendis voluptate. Inventore minima modi aperiam labore veniam dolorem adipisci vitae quasi nobis vel dolorum molestias nam, fugiat pariatur dolor?</p>
+                </div>
+                <div style="position: relative; top:10px;">
+                    <img class="rounded-3 post-photo" src="{{ user.avatar.url }}" data-image="{{ user.avatar.url }}" style="max-width: 610px;">
+                </div>
+                <div class="post-actions" style="margin-top: 20px;">
+                    <img class="likeBtn" src="{% static "images/heart_before.png" %}" width="32" height="32" alt="" srcset=""
+                    data-heart-after="{% static "images/heart_after.png" %}">
+                </div>
+                <hr>
+                <div>
+                    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                    <a href="">Ilya Dybovsky</a>
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                    <hr style="margin: 0; padding: 0;">
+                    <div style="margin-left: 35px; width: auto;">
+                        <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                        <a href="">Ilya Dybovsky</a>
+                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                        <hr style="margin: 0; padding: 0;">
+                    </div>{% comment %} Answers {% endcomment %}
+                    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                    <a href="">Ilya Dybovsky</a>
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                    <hr style="margin: 0; padding: 0;">
+                </div>
+            </div>
+        </div>    
+        <div id="modalPost" class="modal">
+            <span class="close-modal">&times;</span>]
+            <img id="modalPostImg" src="" alt="Photo">
+        </div>
+    </div>
+    <dir class="col-md-4" style="margin-top:60px;">
+        <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur facilis minus magni fugiat saepe consequuntur, deleniti praesentium iusto aut rem nisi nulla at consectetur! Harum odit temporibus blanditiis ipsum consequuntur?</span>
+    </dir>
+</div>
 {% endblock content %}
+{% block scripts %}
+<script src="{% static "photos/open_photo.js" %}"></script>
+<script src="{% static "posts/posts_scripts.js" %}"></script>
+{% endblock scripts %}

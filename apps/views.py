@@ -1,8 +1,7 @@
 import http.client
-import json
 import os
-import replicate
 import http
+import replicate
 import requests
 import random
 
@@ -21,6 +20,7 @@ def index(request):
 def ai_images(request):
     return render(request, "apps/ai_images.html")
 
+
 @csrf_exempt
 def generate_image(request):
     if request.method == "POST":
@@ -35,16 +35,18 @@ def generate_image(request):
                 "width": 704,
                 "height": 512,
                 "prompt": prompt,
-            }
+            },
         )
-        return JsonResponse({"message": "success", "image": output}, status=http.client.OK)
+        return JsonResponse(
+            {"message": "success", "image": output}, status=http.client.OK
+        )
     else:
-        return JsonResponse({"message": "Bad request"}, status=400)
-    
+        return JsonResponse({"message": "Bad request"}, status=http.client.BAD_REQUEST)
 
 
 def avatar_rick_and_morty(request):
     return render(request, "apps/generate_avatar_rick_and_morty.html")
+
 
 @csrf_exempt
 def avatar_rick_and_morty_generate(request):
@@ -54,13 +56,21 @@ def avatar_rick_and_morty_generate(request):
             url = f"https://rickandmortyapi.com/api/character?page={page}"
             headers = {"user-agent": str(UserAgent.random)}
             response = requests.get(url=url, headers=headers, timeout=60).json()
-            characters = random.randint(0, len(response["results"])-1)
+            characters = random.randint(0, len(response["results"]) - 1)
             character = response["results"][int(characters)]
 
-            data = {"name": character["name"], "status": character["status"], "species": character["species"],
-                    "gender": character["gender"], "src" :character["image"], "message": "Success"}
-            return JsonResponse(data, status=200)
+            data = {
+                "name": character["name"],
+                "status": character["status"],
+                "species": character["species"],
+                "gender": character["gender"],
+                "src": character["image"],
+                "message": "Success",
+            }
+            return JsonResponse(data, status=http.client.OK)
         except Exception as ex_:
-            return JsonResponse({"message": ex_}, status=500)
+            return JsonResponse(
+                {"message": ex_}, status=http.client.INTERNAL_SERVER_ERROR
+            )
     else:
-        return JsonResponse({"message": "Bad request"}, status=400)
+        return JsonResponse({"message": "Bad request"}, status=http.client.BAD_REQUEST)

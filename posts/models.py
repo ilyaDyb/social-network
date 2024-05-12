@@ -28,3 +28,6 @@ class Comment(models.Model):
     text = models.TextField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class Answer(models.Model):
+    ... #foreign key with comment

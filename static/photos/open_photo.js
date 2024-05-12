@@ -5,6 +5,12 @@ $(document).ready(function() {
     var deletePhotoBtn = $(".delete-photo-btn");
     var photoId = null;
 
+    $(".post-photo").click(function () {
+        var imageUrl = $(this).data("image");
+        $("#modalPostImg").attr("src", imageUrl);
+        $("#modalPost").show();
+    })
+
     $(".photo-link").click(function(event) {
         event.preventDefault();
         var imageUrl = $(this).data("image");
@@ -15,6 +21,7 @@ $(document).ready(function() {
 
     closeModalBtn.click(function() {
         modal.hide();
+        $("#modalPost").hide();
     });
 
     deletePhotoBtn.click(function() {

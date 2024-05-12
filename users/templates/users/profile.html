@@ -3,6 +3,7 @@
 {% block title %}Profile{% endblock title %}
 {% block styles %}
 <link rel="stylesheet" href="{% static "photos/style.css" %}">
+<link rel="stylesheet" href="{% static "posts/style.css" %}">
 {% endblock styles %}
 {% block content %}
 <div class="row mt-3">
@@ -10,7 +11,7 @@
         <div class="profile-header d-flex align-items-center">
             <button id="uploadBtn" style="background-color: transparent; opacity: 100%; border-radius:50%; border: solid 2px black;">
                 {% if user.avatar %}
-                    <img id="previewImg" style="border-radius: 50%;" src="/media/{{ user.avatar }}" width="168" height="168">
+                    <img id="previewImg" style="border-radius: 50%;" src="{{ user.avatar.url }}" width="168" height="168">
                 {% else %}
                     <img id="previewImg" style="border-radius: 50%;" src="{% static "images/User-avatar.svg.png" %}" width="168" height="168">
                 {% endif %}
@@ -44,9 +45,9 @@
             {% if user.friends %}
             <div style="margin-left: 18px;">
                 {% for friend in friends %}
-                {% if forloop.counter <= 8%}
+                {% if forloop.counter <= 8 %}
                     <a href="{% url 'users:profile' friend.username %}" style="opacity: 100%; background: transparent;">
-                        <img id="previewImg" style="border-radius: 50%; margin-left: 10px; margin-top: 10px; border: solid 2px black;" src="/media/{{ friend.avatar }}" width="64" height="64">
+                        <img id="previewImg" style="border-radius: 50%; margin-left: 10px; margin-top: 10px; border: solid 2px black;" src="{{ friend.avatar.url }}" width="64" height="64">
                     </a>
                 {% endif %}
                 {% endfor %}
@@ -78,24 +79,53 @@
 <hr/>
 <div class="profile-posts">
     <h2>Последние посты</h2>
-    <div class="post">
-        <div class="post-header">
-            <img src="" alt="Post Author Picture" class="post-author-picture">
-            <span class="post-author-name">Имя автора</span>
-            <span class="post-time">2 часа назад</span>
-        </div>
-        <div class="post-content">
-            <p>Текст поста...</p>
-        </div>
-        <div class="post-actions">
-            <button class="like-button">Нравится</button>
-            <button class="comment-button">Комментировать</button>
+    <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
+        <div class="container">
+            <div class="post-header" style="position: relative; top:10px;">
+                <a href="{% url "users:profile" user.username %}">
+                    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="50" height="50">
+                </a>
+                <a class="post-author-name" href="{% url "users:profile" user.username %}">Ilya Dybovsky</a>
+                <span class="post-time">9th of May 18:29</span>
+            </div>
+            <div class="post-content" style="position: relative; top:10px;">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat quia reiciendis voluptate. Inventore minima modi aperiam labore veniam dolorem adipisci vitae quasi nobis vel dolorum molestias nam, fugiat pariatur dolor?</p>
+            </div>
+            <div style="position: relative; top:10px;">
+                <img class="rounded-3 post-photo" src="{{ user.avatar.url }}" data-image="{{ user.avatar.url }}" style="max-width: 625px;">
+            </div>
+            <div class="post-actions" style="margin-top: 20px;">
+                <img class="likeBtn" src="{% static "images/heart_before.png" %}" width="32" height="32" alt="" srcset=""
+                data-heart-after="{% static "images/heart_after.png" %}">
+            </div>
+            <hr>
+            <div>
+                <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                <a href="">Ilya Dybovsky</a>
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                <hr style="margin: 0; padding: 0;">
+                <div style="margin-left: 35px; width: auto;">
+                    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                    <a href="">Ilya Dybovsky</a>
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                    <hr style="margin: 0; padding: 0;">
+                </div>{% comment %} Answers {% endcomment %}
+                <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                <a href="">Ilya Dybovsky</a>
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                <hr style="margin: 0; padding: 0;">
+            </div>
         </div>
     </div>    
-    <!-- Еще посты -->
+    <div id="modalPost" class="modal">
+        <span class="close-modal">&times;</span>]
+        <img id="modalPostImg" src="" alt="Photo">
+    </div>
+    
 </div>
 {% endblock content %}
 {% block scripts %}
 <script src="{% static "users/profile.js" %}"></script>
 <script src="{% static "photos/open_photo.js" %}"></script>
+<script src="{% static "posts/posts_scripts.js" %}"></script>
 {% endblock scripts %}
