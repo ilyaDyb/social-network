@@ -29,7 +29,7 @@ def login(request):
             else:
                 auth.login(request, user)
                 messages.success(request, "Successful login")
-                return redirect(reverse("feed:feed"))
+                return redirect(reverse("posts:feed"))
             
     else:
         form = UserLoginForm()
