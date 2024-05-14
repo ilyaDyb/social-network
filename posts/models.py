@@ -29,5 +29,5 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Answer(models.Model):
-    ... #foreign key with comment
+# class Answer(models.Model):
+#     ... #foreign key with comment

@@ -44,7 +44,7 @@ $(document).ready(function() {
         $("#hiddenBlock").toggle();
     });
     $("#saveButton").click(function(){
-        text = $("#textInput").val();
+        var text = $("#textInput").val();
         $.ajax({
             type: "POST",
             url: "http://127.0.0.1:8000/photos/load-photo/",
@@ -81,6 +81,30 @@ $(document).ready(function() {
                 setTimeout(function () {
                     successMessage.fadeOut(400);
                 }, 7000);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Error:", textStatus, errorThrown);
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    $(document).on("click", "#btnDelPost", function() {
+        var postId = $(this).data("post-id");
+        
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/delete-post/",
+            data: {post_id: postId},
+            success: function(data) {
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+                var divId = "#post_" + postId;
+                $(divId).remove();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log("Error:", textStatus, errorThrown);

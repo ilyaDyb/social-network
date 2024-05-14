@@ -28,7 +28,7 @@ def load_photo(request):
         image = request.FILES.get("file")
         index = str(image).rfind(".")
         
-        if str(image)[index:] not in [".png", ".jpeg", "jpg", "webp"]:
+        if str(image)[index:] not in [".png", ".jpeg", ".jpg", ".webp"]:
             return JsonResponse({"message": "Invalid format"})
         
         if image.size > 10 * 1024 * 1024:

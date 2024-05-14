@@ -16,4 +16,6 @@ urlpatterns = [
     path('friends/<str:username>', views.friends, name='friends'),
     path('send_friend_request/<str:username>/', views.send_friend_request, name='send_friend_request'),
     path('accept_friend_request/<str:username>/', views.accept_friend_request, name='accept_friend_request'),
+
+    path('delete-post/', views.delete_post, name='delete_post'),
 ]

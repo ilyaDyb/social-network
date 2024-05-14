@@ -6,9 +6,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.db.models import Q
 
+from posts.models import Post
+
 from .models import Friendship, UserProfile, Users
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
+from .validators import validate_create_post
 
 def login(request):
     if request.method == "POST":
@@ -25,7 +28,7 @@ def login(request):
             else:
                 user = auth.authenticate(request, username=username_or_email, password=password)
             if user is None:
-                form.add_error(None, "Invalid login or password")
+                form.add_error(None, "Invalid login or password") #need fix
             else:
                 auth.login(request, user)
                 messages.success(request, "Successful login")
@@ -60,15 +63,30 @@ def logout(request):
 
 @login_required
 def profile(request, username):
-    user = Users.objects.get(username=username)
-    friends = user.accepted_friends
-    photos = user.photos.all().order_by("-id")[0:3]
-    context = {
-        "user": user,
-        "friends": friends,
-        "photos": photos,
-    }
-    return render(request, "users/profile.html", context=context)
+    if request.method == "POST":
+        text = request.POST.get("text_content")
+        image = request.FILES.get("file_content")
+        validate_result = validate_create_post(text=text, image=image)
+
+        if validate_result["status"]:
+            Post.objects.create(user=request.user, text=text, image=image)
+            messages.success(request, str(validate_result["text"]))
+            return redirect(reverse("users:profile", kwargs={"username": username}))
+        if not validate_result["status"]:
+            messages.warning(request, str(validate_result["text"]))
+            return redirect(reverse("users:profile", kwargs={"username": username}))
+    else:
+        user = Users.objects.get(username=username)
+        friends = user.accepted_friends
+        photos = user.photos.all().order_by("-id")[0:3]
+        posts = Post.objects.filter(user=user).order_by("-id")
+        context = {
+            "user": user,
+            "friends": friends,
+            "photos": photos,
+            "posts": posts,
+        }
+        return render(request, "users/profile.html", context=context)
 
 
 @login_required
@@ -181,3 +199,17 @@ def accept_friend_request(request, username):
         else:
             return JsonResponse({"message": "Friend request is not pending"}, status=400)
     return JsonResponse({"message": "Invalid method"}, status=405)
+
+
+@csrf_exempt
+def delete_post(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        try:
+            post = Post.objects.get(id=post_id)
+            post.delete()
+        except Post.DoesNotExist:
+            return JsonResponse({"message": "Does not exists"}, status=400)
+        return JsonResponse({"message": "Success"}, status=200)
+    else:
+        return JsonResponse({"message": "Bad request"}, status=405)
