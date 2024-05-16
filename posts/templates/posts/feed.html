@@ -6,9 +6,9 @@
 {% endblock styles %}
 {% block content %}
 <div class="row" style="margin-top: 20px;">
-    <div class="col-md-9">
+    <div id="posts-block" class="col-md-9">
         {% for post in posts %}
-            <div class="profile-posts" id="post_{{ post.id }}" style="margin-top: {% if forloop.counter > 1 %}20px{% endif %};">
+            <div class="profile-posts" id="post_{{ post.id }}" style="margin-bottom: 20px;">
                 <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
                     <div class="container">
                         <div class="post-header" style="position: relative; top:10px;">
@@ -44,16 +44,16 @@
                             <a href="">Ilya Dybovsky</a>
                             <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
                             <hr style="margin: 0; padding: 0;">
-                            <div style="margin-left: 35px; width: auto;">
+                            {% comment %} <div style="margin-left: 35px; width: auto;">
                                 <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
                                 <a href="">Ilya Dybovsky</a>
                                 <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
                                 <hr style="margin: 0; padding: 0;">
-                            </div>{% comment %} Answers {% endcomment %}
+                            </div> Answers
                             <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
                             <a href="">Ilya Dybovsky</a>
                             <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
-                            <hr style="margin: 0; padding: 0;">
+                            <hr style="margin: 0; padding: 0;"> {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -64,10 +64,12 @@
                 </div>
             </div>
             {% endfor %}
+            <input type="hidden" name="nextPage" id="nextPage" value="{{ next_page }}">
+            {% csrf_token %}
         </div>
-    <dir class="col-md-3">
+    <div class="col-md-3">
         <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur facilis minus magni fugiat saepe consequuntur, deleniti praesentium iusto aut rem nisi nulla at consectetur! Harum odit temporibus blanditiis ipsum consequuntur?</span>
-    </dir>
+    </div>
 </div>
 {% endblock content %}
 {% block scripts %}

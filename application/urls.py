@@ -23,6 +23,7 @@ from posts.utils import HomeRedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__debug__/", include("debug_toolbar.urls")),
     path("", include("posts.urls", namespace="posts")),
     path("", HomeRedirectView.as_view(url='/feed/'), name="home_redirect"),
     path("", include("users.urls", namespace="users")),

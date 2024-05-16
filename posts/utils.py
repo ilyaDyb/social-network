@@ -8,3 +8,4 @@ class HomeRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self, *args, **kwargs) -> str | None:
         return super().get_redirect_url(*args, **kwargs)
+    

@@ -3,7 +3,7 @@ $(document).ready(function () {
     $("#generate_img").click(function name(params) {
         var prompt = $("#prompt").val();
         if (!prompt) {
-            alert("You should to write prompt");
+            alert("You should write prompt");
             return;
         }
         $("#spinner").addClass("spinner-border");
