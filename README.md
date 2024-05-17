@@ -6,5 +6,5 @@ If you want to start it:
 4. You should to change database's settings for your database (preferably not sqlite3)
 5. python3 manage.py migrate
 6. You should use python-dotenv for token (pip install python-dotenv, then .env: REPLICATE_API_TOKEN=<paste-your-token-here>). (You can get it after authorization on https://replicate.com/)
-7. Then you can to use full functional in the application
+7. Then you can use full functional in the application
 python3 manage.py runserver

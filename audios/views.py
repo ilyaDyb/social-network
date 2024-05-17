@@ -18,7 +18,6 @@ def audios(request, username):
         return HttpResponse(status=404)
     
     search = request.GET.get("search")
-    audios = None
 
     if search:
         audios = Audio.objects.filter(Q(title__icontains=search) | Q(author__icontains=search))
@@ -30,7 +29,7 @@ def audios(request, username):
 
     context = {
         "username": username,
-        "audios": audios,
+        "audios": audios.order_by("-id"),
         "flag": flag,
     }
     return render(request, "audios/audios.html", context=context)

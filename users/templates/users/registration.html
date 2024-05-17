@@ -7,6 +7,7 @@
     <title>Registration</title>
     <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "users/login-registration.css" %}">
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 </head>
 <body>
@@ -14,7 +15,7 @@
     <div class="container">
         <div class="wrapper">
           <div class="title"><span>Registration</span></div>
-          <form action="{% url "users:registration" %}" method="POST">
+          <form action="{% url "users:registration" %}" method="post">
             {% csrf_token %}
             {% if form.errors %}
               {% for field in form %}
@@ -52,9 +53,10 @@
               <i class="fas fa-lock"></i>
               <input name="password2" id="id_password2" type="password" placeholder="Confirm password" required>
             </div>
-      
+            <span id="warning"></span>
+            <div style="position: relative; right: 10px; margin-bottom: 10px;" class="g-recaptcha" data-sitekey="6LeCR-ApAAAAAOagmPXMZDGZLWPs1P1kNL7q7C-B"></div>
             <div class="row button">
-              <input type="submit" value="Sign up">
+              <input class="" id="btnSub" type="submit" value="Sign up">
             </div>
           </form>
       
@@ -63,5 +65,8 @@
     <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
     <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>
     <script src="{% static "scripts/notif.js" %}"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="{% static "scripts/captcha.js" %}"></script>
+
 </body>
 </html>

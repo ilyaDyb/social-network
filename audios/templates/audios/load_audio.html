@@ -3,6 +3,7 @@
 {% block content %}
 <div class="mt-3">
     <h1>Load audio</h1>
+    <span>It support only mp3 format</span>
     <form action="" method="post" class="form-control" enctype="multipart/form-data">
         {% csrf_token %}
         {% if form.errors %}

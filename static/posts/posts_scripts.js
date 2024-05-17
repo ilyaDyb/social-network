@@ -16,7 +16,7 @@ $(document).ready(function () {
                     $("#posts-block").append(data.html);
                     nextPage++;
                     $("#nextPage").val(nextPage);
-
+                    
                 },
                 error: function(xhr, status, error) {
                     console.error('Ошибка при загрузке постов:', error);
