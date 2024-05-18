@@ -35,7 +35,7 @@
                 <ul style="margin-top:15px;">
                     <li class="list-group-item"><a href="{% url "users:profile" request.user.username %}" class="btn btn-light" style=" min-width: 130px;">Profile</a></li>
                     <li class="list-group-item"><a href="/feed" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Feed</a></li>
-                    <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Messanger</a></li>
+                    <li class="list-group-item"><a href="{% url "messanger:index" %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Messanger</a></li>
                     <li class="list-group-item"><a href="{% url "users:friends" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Friends</a></li>                    
                     <li class="list-group-item"><a href="#" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Groups</a></li>
                     <li class="list-group-item"><a href="{% url "photos:photos" request.user.username %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Photos</a></li>

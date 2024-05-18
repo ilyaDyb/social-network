@@ -1,7 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 import re
+from django_recaptcha.fields import ReCaptchaField
 
 from .models import Users
 
@@ -12,6 +13,7 @@ class UserRegistrationForm(UserCreationForm):
     last_name = forms.CharField(max_length=20)
     password1 = forms.CharField()
     password2 = forms.CharField()
+    captcha = ReCaptchaField()
 
     class Meta:
         model = Users

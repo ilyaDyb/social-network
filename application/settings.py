@@ -39,12 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "debug_toolbar",
+    'django_recaptcha',
 
     'users',
     'photos',
     'audios',
     'apps',
     'posts',
+    'messanger',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +144,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.Users"
 LOGIN_URL = "/login/"
+
+RECAPTCHA_PUBLIC_KEY = "6LeCR-ApAAAAAOagmPXMZDGZLWPs1P1kNL7q7C-B"
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
