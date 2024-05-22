@@ -6,7 +6,7 @@ class SpamProtectionMiddleware:
     def __init__(self, get_response) -> None:
         self.get_response = get_response
         self.cache_timeout = 300
-        self.request_limit = 12
+        self.request_limit = 10**2
         self.block_period = 48
 
     def __call__(self, request):

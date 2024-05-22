@@ -1,5 +1,7 @@
+import json
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -8,7 +10,7 @@ from django.db.models import Q
 
 from posts.models import Post
 
-from .models import Friendship, UserProfile, Users
+from .models import Friendship, UserActivity, UserProfile, Users
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 from .validators import validate_create_post
@@ -80,11 +82,13 @@ def profile(request, username):
         friends = user.accepted_friends
         photos = user.photos.all().order_by("-id")[0:3]
         posts = Post.objects.filter(user=user).order_by("-id")
+        activity = user.activity
         context = {
             "user": user,
             "friends": friends,
             "photos": photos,
             "posts": posts,
+            "activity": activity,
         }
         return render(request, "users/profile.html", context=context)
 
@@ -213,3 +217,27 @@ def delete_post(request):
         return JsonResponse({"message": "Success"}, status=200)
     else:
         return JsonResponse({"message": "Bad request"}, status=405)
+    
+
+@csrf_exempt
+@login_required
+def update_status(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        status = data["status"]
+        now = timezone.now()
+
+        defaults = {"last_activity": now}
+
+        if status == "offline":
+            defaults["is_online"] = False
+        elif status == "online":
+            defaults["is_online"] = True
+        else:
+            return JsonResponse({"status": "Fatal error"})
+        
+        UserActivity.objects.update_or_create(user=request.user, defaults=defaults)
+
+        return JsonResponse({"status": "Success"}, status=200)
+    else:
+        return JsonResponse({"status": "Fail"}, status=405)

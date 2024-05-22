@@ -17,7 +17,7 @@ class Post(models.Model):
         verbose_name_plural = ("Posts")
 
     def __str__(self):
-        return str(self.pk)
+        return f"{self.pk} {self.user.username}'s post"
 
     def get_absolute_url(self):
         return reverse("Posts_detail", kwargs={"pk": self.pk})

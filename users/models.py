@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.utils import timezone
+
+from tools import tools_get_timestamp
 
 
 class Users(AbstractUser):
@@ -68,3 +71,15 @@ class Friendship(models.Model):
 
     def get_absolute_url(self):
         return reverse("Friendship_detail", kwargs={"pk": self.pk})
+    
+
+class UserActivity(models.Model):
+    user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="activity")
+    last_activity = models.DateTimeField(default=timezone.now)
+    is_online = models.BooleanField(default=None)
+
+    def __str__(self):
+        return f"{self.user.username} is {'onine' if self.is_online else 'offline'}"
+    
+    def get_last_activity(self):
+        return tools_get_timestamp(timestamp=self.last_activity)

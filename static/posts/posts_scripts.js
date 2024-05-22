@@ -1,26 +1,30 @@
 $(document).ready(function () {
     $(".likeBtn").click(function () {
-        newImage = $(this).data("heart-after");
+        var newImage = $(this).data("heart-after");
         $(this).attr("src", newImage);
-    })
+    });
 
-    var hasNextPage = true
+    var hasNextPage = $("#nextPage").val() !== "None";
+
     function loadMorePosts() {
         var nextPage = parseInt($("#nextPage").val());
-        console.log(nextPage);
-        if (hasNextPage == true) {   
+        console.log(nextPage)
+        if (hasNextPage) {
             $.ajax({
                 url: "http://127.0.0.1:8000/feed/?page=" + nextPage,
                 type: 'POST',
-                success: function(data) {
+                success: function (data) {
                     $("#posts-block").append(data.html);
-                    nextPage++;
-                    $("#nextPage").val(nextPage);
-                    
+                    if (data.html.trim() === "") {
+                        hasNextPage = false;
+                    } else {
+                        nextPage++;
+                        $("#nextPage").val(nextPage);
+                    }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Ошибка при загрузке постов:', error);
-                    hasNextPage = false
+                    hasNextPage = false;
                 }
             });
         }
@@ -29,6 +33,6 @@ $(document).ready(function () {
     $(window).scroll(function() {
         if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
             loadMorePosts();
-        }
-    })
+        };
+    });
 });

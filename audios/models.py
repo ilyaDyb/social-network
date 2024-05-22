@@ -13,7 +13,7 @@ class Audio(models.Model):
         verbose_name_plural = ("Audios")
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.author}"
 
     def get_absolute_url(self):
         return reverse("Audio_detail", kwargs={"pk": self.pk})
@@ -28,7 +28,7 @@ class UserAudio(models.Model):
         verbose_name_plural = ("UserAudios")
 
     def __str__(self):
-        return f"{self.audio.title} - {self.user.username}"
+        return f"{self.audio.title} - {self.audio.author}"
 
     def get_absolute_url(self):
         return reverse("UserAudio_detail", kwargs={"pk": self.pk})

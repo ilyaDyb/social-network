@@ -7,17 +7,17 @@
         <div class="col-md-8">
             <div class="list-group" id="chat-list">
                 <!-- Список чатов -->
-                {% for chat in chats %}
-                <a href="" class="list-group-item list-group-item-action">
+                {% for chat_detail in chat_details %}
+                <a href="{% url "messanger:dialogue" chat_detail.other_participant.username %}" class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
                         <div class="d-flex">
-                            <img style="border-radius: 50%;" src="{{ request.user.avatar.url }}" width="50" height="50" alt="">
+                            <img style="border-radius: 50%;" src="{{ chat_detail.other_participant.avatar.url }}" width="50" height="50" alt="">
                             <div class="ml-3">
-                                <h5 class="mb-1">First_name Last_name</h5>
-                                <p class="mb-1" style="margin-bottom: 0;">Last message</p>
+                                <h5 class="mb-1">{{ chat_detail.other_participant.first_name }} {{ chat_detail.other_participant.last_name }}</h5>
+                                <p class="mb-1" style="margin-bottom: 0;">{{ chat_detail.last_message.content|truncatechars:60 }}</p>
                             </div>
                         </div>
-                        <small>timestamp</small>
+                        <small>{{ chat_detail.last_message.get_timestamp }}</small>
                     </div>
                 </a>
                 
@@ -31,10 +31,6 @@
                     <form action="" method="get">
                         <a href="" class="list-group-item list-group-item-action">All chats</a>
                         <a href="" class="list-group-item list-group-item-action">Unread</a>
-                        <div id="hiddenBlock" style="display: none; margin-top:10px;">
-                            <input type="text" name="find_all" id="textInput">
-                            <button class="btn-dark" style="">Find</button>
-                        </div>
                     </form>
                 </div>
             </div>

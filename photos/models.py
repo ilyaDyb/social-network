@@ -11,6 +11,8 @@ class Photo(models.Model):
     photo = models.FileField(upload_to="users_photos", blank=True, null=True,
                             validators=[FileExtensionValidator(allowed_extensions=["jpg", "png", "jpeg"])])
     created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.pk} {self.user.username}'s photo"
     
     class Meta:
         verbose_name = ("Photo")

@@ -18,7 +18,9 @@
             </button>
             <input type="file" id="fileInput" style="display: none;">
             <div>
-                <h1 class="profile-name" style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
+                <h1 style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
+                <p style="color:gray; margin-left:30px;">{% if activity.is_online == False %}Offline last seen: {{ activity.get_last_activity }} {% elif activity.is_online == True %} Online{% endif %}</p>
+
                 <p class="profile-bio" id="shortInf" style="margin-left:30px;">{% if user.user_profile.small_info %}{{ user.user_profile.small_info }}{% else %}No information{% endif %}
                     {% if request.user.username == user.username %}
                     <button id="showBlock" class="btn btn-primary" style="width:px; height:20px;"></button>
@@ -30,7 +32,7 @@
                     {% endif %}
                 {% endif %}
                 <div id="hiddenBlock" style="display: none; margin-left:30px;">
-                    <textarea type="text" id="textInput"></textarea>
+                    <textarea type="text" id="textInput" style="resize: none;"></textarea>
                     <button id="saveButton" style="position:relative; bottom:7px;">Save</button>
                 </div>
             </div>
@@ -121,7 +123,7 @@
                                 <img src="{{ request.user.avatar.url }}" style="border-radius: 50%;" class="" alt="" width="34" height="34">
                             </a>
                             <input class="" type="text" name="" id="" placeholder="write the comment">
-                            <input type="file" name="" id="">
+                            <input type="file" name="" id="" style="max-width: 250px;">
                             <button class="btn btn-outline-dark">Send</button>
                         </div>
                         <hr>

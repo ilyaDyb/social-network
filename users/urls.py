@@ -18,4 +18,6 @@ urlpatterns = [
     path('accept_friend_request/<str:username>/', views.accept_friend_request, name='accept_friend_request'),
 
     path('delete-post/', views.delete_post, name='delete_post'),
+
+    path("update_status/", views.update_status, name="update_status")
 ]

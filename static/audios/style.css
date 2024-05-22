@@ -7,5 +7,4 @@
   .audio-player audio {
     width: 100%; /* Заполнение всей доступной ширины контейнера */
     height: 40px; /* Высота плеера */
-    background-color: black;
   }
