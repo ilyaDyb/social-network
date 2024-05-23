@@ -33,7 +33,8 @@ def chats_page(request):
 def dialogue_page(request, username):
     user_sender = Users.objects.get(username=username)
     user_receiver = request.user
-    last_seen = user_sender.activity.get_last_activity
+    user_activity = user_sender.activity
+
     current_chat = ChatManager.get_or_create_chat(user1=user_receiver, user2=user_sender)
     messages = Chat.get_messages(current_chat)
 
@@ -41,7 +42,7 @@ def dialogue_page(request, username):
         "messages": messages,
         "user_sender": user_sender,
         "user_receiver": user_receiver,
-        "last_seen": last_seen,
+        "user_activity": user_activity,
     }
     if request.method == "POST":
         message_text = request.POST.get("message")

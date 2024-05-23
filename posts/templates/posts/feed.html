@@ -16,7 +16,7 @@
                                 <img style="border-radius: 50%;" src="{{ post.user.avatar.url }}" alt="" width="50" height="50">
                             </a>
                             <a class="post-author-name" href="{% url "users:profile" post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a>
-                            <span class="post-time">{{ post.created_at }}</span>
+                            <span class="post-time">{{ post.get_timestamp }}</span>
                         </div>
                         <div class="post-content" style="position: relative; top:10px;">
                             <p>{{ post.text }}</p>

@@ -60,22 +60,21 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({status: status})
+            body: JSON.stringify({ status: status })
         });
-      }
-      
-      updateUserStatus('online')
-      
-      setInterval(() => updateUserStatus('online'), 30000);
-      window.addEventListener("beforeunload", () => updateUserStatus('offline'));
-      window.addEventListener("visibilitychange", () => {
-          if (document.visibilityState == "hidden") {
-              updateUserStatus('offline')
-          }
-          else {
-              updateUserStatus("online")
-          }
-      });
+    }
+    
+    updateUserStatus('online');
+    
+    setInterval(() => updateUserStatus('online'), 15000);
+    window.addEventListener("beforeunload", () => updateUserStatus('offline'));
+    window.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+            updateUserStatus('offline');
+        } else {
+            updateUserStatus('online');
+        }
+    });
     </script>
     {% block scripts %}{% endblock scripts %}
 </body>
