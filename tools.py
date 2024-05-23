@@ -15,4 +15,4 @@ def tools_get_timestamp(timestamp):
     elif time_difference_in_minutes < 4320:
         return f"{int(time_difference_in_minutes // 1440)} days ago."
     else:
-        return timestamp.strftime("%H:%M %d %B")
+        return timestamp.strftime("%d %B %H:%M")

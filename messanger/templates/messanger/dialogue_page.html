@@ -53,7 +53,7 @@
                         <div class="ml-3">
                             <h5 class="mb-1"><a style="text-decoration:none; color: black;" href="{% url "users:profile" user_sender.username %}">
                                 {{ user_sender.first_name }} {{ user_sender.last_name }}</a></h5>
-                            <p class="mb-1" style="margin-bottom: 0;">{% if not user_activity.is_online %} Last seen {{ user_activity.get_timestamp }}.. {% else %}Online{% endif %}</p>
+                            <p class="mb-1" style="margin-bottom: 0;">{% if not user_activity.is_online %} Last seen {{ user_activity.get_last_activity }}.. {% else %}Online{% endif %}</p>
                         </div>
 
                     </div>
