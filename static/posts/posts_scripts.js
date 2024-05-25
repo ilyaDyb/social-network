@@ -11,7 +11,7 @@ $(document).ready(function () {
         console.log(nextPage)
         if (hasNextPage) {
             $.ajax({
-                url: "http://127.0.0.1:8000/feed/?page=" + nextPage,
+                url: "http://" + window.location.host + "/feed/?page=" + nextPage,
                 type: 'POST',
                 success: function (data) {
                     $("#posts-block").append(data.html);

@@ -7,5 +7,6 @@ app_name = "messanger"
 
 urlpatterns = [
     path("", views.chats_page, name="chats_page"),
-    path("<str:username>/", views.dialogue_page, name="dialogue")
+    path('upload/', views.upload_photo, name='upload_photo'),
+    path("<str:username>/", views.dialogue_page, name="dialogue"),
 ]

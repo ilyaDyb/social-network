@@ -14,7 +14,8 @@
                             <img style="border-radius: 50%;" src="{{ chat_detail.other_participant.avatar.url }}" width="50" height="50" alt="">
                             <div class="ml-3">
                                 <h5 class="mb-1">{{ chat_detail.other_participant.first_name }} {{ chat_detail.other_participant.last_name }}</h5>
-                                <p class="mb-1" style="margin-bottom: 0;">{{ chat_detail.last_message.content|truncatechars:60 }}</p>
+                                <p class="mb-1" style="margin-bottom: 0;">{{ chat_detail.last_message.content|truncatechars:54 }}</p>
+
                             </div>
                         </div>
                         <small>{{ chat_detail.last_message.get_timestamp }}</small>

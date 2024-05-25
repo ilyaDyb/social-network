@@ -17,7 +17,7 @@ fileInput.addEventListener('change', function() {
         formData.append("file", file);
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/profile/edit-img/",
+            url: "http://" + window.location.host + "/profile/edit-img/",
             data: formData,
             processData: false,
             contentType: false,
@@ -47,7 +47,7 @@ $(document).ready(function() {
         var text = $("#textInput").val();
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/photos/load-photo/",
+            url: "http://" + window.location.host + "/photos/load-photo/",
             data: {"text": text},
             success: function(data) {
                 if (data.message != "Your text is too big") {
@@ -95,7 +95,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/delete-post/",
+            url: "http://" + window.location.host + "/delete-post/",
             data: {post_id: postId},
             success: function(data) {
                 successMessage.html(data.message);

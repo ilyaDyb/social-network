@@ -9,7 +9,7 @@ $(document).ready(function () {
         $("#spinner").addClass("spinner-border");
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/apps/ai-images/generate-image/",
+            url: "http://" + window.location.host + "/apps/ai-images/generate-image/",
             data: {prompt: prompt},
             success: function (data) {
                 $("#spinner").removeClass("spinner-border");

@@ -30,7 +30,7 @@ $(document).ready(function() {
             console.log("if")
             $.ajax({
                 type: "POST",
-                url: "http://127.0.0.1:8000/photos/delete/",
+                url: "http://" + window.location.host + "/photos/delete/",
                 data: { photo_id: photoId },
                 success: function(data) {
                     modal.hide();

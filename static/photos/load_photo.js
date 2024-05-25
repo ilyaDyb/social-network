@@ -15,7 +15,7 @@ fileInput.on('change', function() {
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/photos/load-photo/",
+            url: "http://" + window.location.host + "/photos/load-photo/",
             data: formData,
             processData: false,
             contentType: false,

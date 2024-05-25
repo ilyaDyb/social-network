@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
        var audioId = $(this).data("audio-id");
        $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:8000/audios/add-audio/",
+        url: "http://" + window.location.host + "/audios/add-audio/",
         data: {audioId: audioId},
         success: function(data) {
             successMessage.html(data.message);
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var audioId = $(this).data("audio-id");
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/audios/delete-audio/",
+            url: "http://" + window.location.host + "/audios/delete-audio/",
             data: {audioId: audioId},
             success: function(data) {
                 successMessage.html(data.message);
