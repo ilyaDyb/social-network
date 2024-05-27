@@ -16,3 +16,14 @@ def tools_get_timestamp(timestamp):
         return f"{int(time_difference_in_minutes // 1440)} days ago."
     else:
         return timestamp.strftime("%d %B %H:%M")
+    
+def photo_validate(photo):
+    index = str(photo).rfind(".")
+    
+    if str(photo)[index:] not in [".png", ".jpeg", ".jpg", ".webp"]:
+        return {"status": False, "message": "Invalid format"}
+
+    if photo.size > 10 * 1024 * 1024:
+        return {"status": False, "message": "Your file is too big"}
+    
+    return {"status": True}

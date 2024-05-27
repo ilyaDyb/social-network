@@ -15,7 +15,11 @@ def feed(request):
     page = request.GET.get("page")
     paginator = Paginator(posts, 4)
     current_page = paginator.get_page(page)
-    next_page = current_page.next_page_number()
+    try:
+        next_page = current_page.next_page_number()
+    except Exception:
+        return render(request, "posts/feed.html", context={"next_page": None})
+    
     context = {
         "posts": current_page,
         "next_page": next_page,

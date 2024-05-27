@@ -1,12 +1,16 @@
-from django.shortcuts import redirect, render
+import os
+
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from django.contrib import messages as django_messages
 from django.http import JsonResponse
+
 from django.views.decorators.csrf import csrf_exempt
 
-from messanger.models import Chat, ChatManager, Message
+
+from application import settings
+from messanger.models import Chat, ChatManager
 from users.models import Users
+from tools import photo_validate
 
 
 @login_required
@@ -29,33 +33,37 @@ def chats_page(request):
 
     return render(request, "messanger/chats_page.html", context=context)
 
-@login_required
-@csrf_exempt
-def upload_photo(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        chat_id = request.POST.get('chat_id')
-        photo = request.FILES.get('photo')
 
-        if user_id and chat_id and photo:
-            user = Users.objects.get(id=user_id)
-            chat = Chat.objects.get(id=chat_id)
-            other_user = Chat.get_other_participant(chat, user)
-            message = Message.objects.create(sender=user, receiver=other_user, chat=chat, file=photo)
-            return JsonResponse({'success': True, 'url': message.file.url})
-    
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST' and request.FILES.get('photo'):
+        photo = request.FILES['photo']
+        validate = photo_validate(photo)
+        if validate["status"]:
+            filename = photo.name
+            file_path = os.path.join(settings.MEDIA_ROOT, 'photo_messages', filename)
+
+            with open(file_path, 'wb+') as destination:
+                for chunk in photo.chunks():
+                    destination.write(chunk)
+            
+            file_url = os.path.join(settings.MEDIA_URL, 'photo_messages', filename) #/media/photo_messages/example3.webp
+
+            return JsonResponse({'success': True, 'url': file_url})
+        else:
+            return JsonResponse({"message": validate["message"]})
     return JsonResponse({'success': False})
 
 @login_required
 def dialogue_page(request, username):
     user_sender = Users.objects.get(username=username)
     user_receiver = request.user
-    user_activity = user_sender.activity
 
     current_chat = ChatManager.get_or_create_chat(user1=user_receiver, user2=user_sender)
     chat_id = current_chat.id
 
     messages = Chat.get_messages(current_chat)
+    user_activity = user_sender.activity
 
     context = {
         "messages": messages,

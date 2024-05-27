@@ -52,11 +52,13 @@ class Message(models.Model):
 class ChatManager:
     @staticmethod
     def get_or_create_chat(user1, user2):
-        chat, created = Chat.objects.get_or_create(
+        chat = Chat.objects.filter(
             Q(participant1=user1, participant2=user2) | Q(participant1=user2, participant2=user1)
-        )
+        ).first()
+        if not chat:
+            chat = Chat.objects.create(participant1=user1, participant2=user2)
         return chat
-
+    
     @staticmethod
     def get_user_chats(user):
         chats = Chat.objects.filter(

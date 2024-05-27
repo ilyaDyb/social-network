@@ -7,69 +7,73 @@
 {% block content %}
 <div class="row" style="margin-top: 20px;">
     <div id="posts-block" class="col-md-9">
-        {% for post in posts %}
-            <div class="profile-posts" id="post_{{ post.id }}" style="margin-bottom: 20px;">
-                <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
-                    <div class="container">
-                        <div class="post-header" style="position: relative; top:10px;">
-                            <a href="{% url "users:profile" post.user.username %}">
-                                <img style="border-radius: 50%;" src="{{ post.user.avatar.url }}" alt="" width="50" height="50">
-                            </a>
-                            <a class="post-author-name" href="{% url "users:profile" post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a>
-                            <span class="post-time">{{ post.get_timestamp }}</span>
-                        </div>
-                        <div class="post-content" style="position: relative; top:10px;">
-                            <p>{{ post.text }}</p>
-                        </div>
-                        {% if post.image %}
-                            <div style="position: relative; top:10px;">
-                                <img class="rounded-3 post-photo" src="{{ post.image.url }}" data-image="{{ post.image.url }}" width="625" style="max-width: 625px; max-height: 500px; object-fit: cover;">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="profile-posts" id="post_{{ post.id }}" style="margin-bottom: 20px;">
+                    <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
+                        <div class="container">
+                            <div class="post-header" style="position: relative; top:10px;">
+                                <a href="{% url "users:profile" post.user.username %}">
+                                    <img style="border-radius: 50%;" src="{{ post.user.avatar.url }}" alt="" width="50" height="50">
+                                </a>
+                                <a class="post-author-name" href="{% url "users:profile" post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a>
+                                <span class="post-time">{{ post.get_timestamp }}</span>
                             </div>
-                        {% endif %}
-                        <div class="post-actions" style="margin-top: 20px;">
-                            <img class="likeBtn" src="{% static "images/heart_before.png" %}" width="32" height="32" alt="" srcset=""
-                            data-heart-after="{% static "images/heart_after.png" %}">
-                        </div>
-                        <div class="m-1">
-                            <a href="{% url "users:profile" request.user.username %}">
-                                <img src="{{ request.user.avatar.url }}" style="border-radius: 50%;" class="" alt="" width="34" height="34">
-                            </a>
-                            <input class="" type="text" name="" id="" placeholder="write the comment">
-                            <input type="file" name="" id="" style="max-width: 250px;">
-                            <button class="btn btn-outline-dark">Send</button>
-                        </div>
-                        <hr>
-                        <div>
-                            <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
-                            <a href="">Ilya Dybovsky</a>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
-                            <hr style="margin: 0; padding: 0;">
-                            {% comment %} <div style="margin-left: 35px; width: auto;">
+                            <div class="post-content" style="position: relative; top:10px;">
+                                <p>{{ post.text }}</p>
+                            </div>
+                            {% if post.image %}
+                                <div style="position: relative; top:10px;">
+                                    <img class="rounded-3 post-photo" src="{{ post.image.url }}" data-image="{{ post.image.url }}" width="625" style="max-width: 625px; max-height: 500px; object-fit: cover;">
+                                </div>
+                            {% endif %}
+                            <div class="post-actions" style="margin-top: 20px;">
+                                <img class="likeBtn" src="{% static "images/heart_before.png" %}" width="32" height="32" alt="" srcset=""
+                                data-heart-after="{% static "images/heart_after.png" %}">
+                            </div>
+                            <div class="m-1">
+                                <a href="{% url "users:profile" request.user.username %}">
+                                    <img src="{{ request.user.avatar.url }}" style="border-radius: 50%;" class="" alt="" width="34" height="34">
+                                </a>
+                                <input class="" type="text" name="" id="" placeholder="write the comment">
+                                <input type="file" name="" id="" style="max-width: 250px;">
+                                <button class="btn btn-outline-dark">Send</button>
+                            </div>
+                            <hr>
+                            <div>
                                 <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
                                 <a href="">Ilya Dybovsky</a>
                                 <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
                                 <hr style="margin: 0; padding: 0;">
-                            </div> Answers
-                            <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
-                            <a href="">Ilya Dybovsky</a>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
-                            <hr style="margin: 0; padding: 0;"> {% endcomment %}
+                                {% comment %} <div style="margin-left: 35px; width: auto;">
+                                    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                                    <a href="">Ilya Dybovsky</a>
+                                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                                    <hr style="margin: 0; padding: 0;">
+                                </div> Answers
+                                <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+                                <a href="">Ilya Dybovsky</a>
+                                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+                                <hr style="margin: 0; padding: 0;"> {% endcomment %}
+                            </div>
                         </div>
                     </div>
+                    
+                    <div id="modalPost" class="modal">
+                        <span class="close-modal">&times;</span>]
+                        <img id="modalPostImg" src="" alt="Photo">
+                    </div>
                 </div>
-                
-                <div id="modalPost" class="modal">
-                    <span class="close-modal">&times;</span>]
-                    <img id="modalPostImg" src="" alt="Photo">
-                </div>
+                {% endfor %}
+                <input type="hidden" name="nextPage" id="nextPage" value="{{ next_page }}">
+                {% csrf_token %}
             </div>
-            {% endfor %}
-            <input type="hidden" name="nextPage" id="nextPage" value="{{ next_page }}">
-            {% csrf_token %}
+        <div class="col-md-3">
+            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur facilis minus magni fugiat saepe consequuntur, deleniti praesentium iusto aut rem nisi nulla at consectetur! Harum odit temporibus blanditiis ipsum consequuntur?</span>
         </div>
-    <div class="col-md-3">
-        <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur facilis minus magni fugiat saepe consequuntur, deleniti praesentium iusto aut rem nisi nulla at consectetur! Harum odit temporibus blanditiis ipsum consequuntur?</span>
-    </div>
+    {% else %}
+    <h1>You have not posts</h1>
+    {% endif %}
 </div>
 {% endblock content %}
 {% block scripts %}

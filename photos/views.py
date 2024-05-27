@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Photo
 from users.models import Users
+from tools import photo_validate
 
 
 def photos(request, username):
@@ -26,18 +27,15 @@ def photos(request, username):
 def load_photo(request):
     if request.method == "POST":
         image = request.FILES.get("file")
-        index = str(image).rfind(".")
-        
-        if str(image)[index:] not in [".png", ".jpeg", ".jpg", ".webp"]:
-            return JsonResponse({"message": "Invalid format"})
-        
-        if image.size > 10 * 1024 * 1024:
-            return JsonResponse({"message": "Your file is too big"})
-        try:
-            Photo.objects.create(user=request.user, photo=image)
-        except Exception as e:
-            return JsonResponse({"message": e})
-        return JsonResponse({"message": "Successfull"})
+        validate = photo_validate(image)
+        if not validate["status"]:
+            return JsonResponse({"message": validate["message"]})
+        else:
+            try:
+                Photo.objects.create(user=request.user, photo=image)
+            except Exception as e:
+                return JsonResponse({"message": e})
+            return JsonResponse({"message": "Successfull"})
 
     else:
         return JsonResponse({"message": "Bad request"}, status=405)
