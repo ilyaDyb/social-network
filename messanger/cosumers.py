@@ -3,6 +3,8 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Message, Chat
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
+from webpush import send_user_notification
+from asgiref.sync import sync_to_async
 
 User = get_user_model()
 
@@ -22,7 +24,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.group_name,
             self.channel_name
         )
-
+    
     async def receive(self, text_data=None):
         data = json.loads(text_data)
         message = data.get('message')
@@ -33,6 +35,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user = await self.get_user(user_id)
             chat = await self.get_chat(chat_id)
             other_user = await self.get_other_user(chat, user)
+            other_user_activity = await self.get_status(user=other_user)
 
             await self.save_message(user, chat, other_user, message, str(file_url)[6:])
 
@@ -45,6 +48,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'file_url': file_url,
                 }
             )
+        if other_user_activity:
+            payload = {
+                "type": "New message",
+                "message": message if message else "You have received a new file.",
+                "icon": user.avatar,
+                "url": f"chat/{chat_id}/"
+            }
+            send_user_notification(user=other_user, payload=payload, ttl=1000)
+
 
     async def chat_message(self, event):
         message = event['message']
@@ -57,6 +69,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'file_url': file_url,
         }))
 
+    @database_sync_to_async
+    def get_status(self, user):
+        if user.activity.get_last_activity[0] == "0":
+            return True
+        return user.activity.is_online
+    
     @database_sync_to_async
     def get_user(self, user_id):
         return User.objects.get(id=user_id)

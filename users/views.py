@@ -82,13 +82,18 @@ def profile(request, username):
         friends = user.accepted_friends
         photos = user.photos.all().order_by("-id")[0:3]
         posts = Post.objects.filter(user=user).order_by("-id")
-        activity = user.activity
+        is_online, last_activity = user.activity.is_online, user.activity.get_last_activity()
+
+        if last_activity[0] == "0":
+            is_online = True
+
         context = {
             "user": user,
             "friends": friends,
             "photos": photos,
             "posts": posts,
-            "activity": activity,
+            "is_online": is_online,
+            "last_activity": last_activity,
         }
         return render(request, "users/profile.html", context=context)
 

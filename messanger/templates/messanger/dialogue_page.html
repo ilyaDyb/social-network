@@ -53,7 +53,7 @@
                         <div class="ml-3">
                             <h5 class="mb-1"><a style="text-decoration:none; color: black;" href="{% url "users:profile" user_sender.username %}">
                                 {{ user_sender.first_name }} {{ user_sender.last_name }}</a></h5>
-                            <p class="mb-1" style="margin-bottom: 0;">{% if not user_activity.is_online %} Last seen {{ user_activity.get_last_activity }}.. {% else %}Online{% endif %}</p>
+                            <p class="mb-1" style="margin-bottom: 0;">{% if not is_online %} Last seen {{ last_activity }}.. {% else %}Online{% endif %}</p>
                         </div>
 
                     </div>
@@ -145,7 +145,6 @@
 
         socket.onmessage = function(event) {
             const data = JSON.parse(event.data);
-            document.getElementById("start-div").remove();
             const messageElement = document.createElement('div');
             messageElement.className = "media mb-3 d-flex";
             if (data.username === "{{ user_receiver.username }}") {
@@ -220,10 +219,6 @@
             }
             messageInput.value = '';
             fileEl.value = '';
-        };
-
-        document.getElementById('upload-photo-btn').onclick = function() {
-            document.getElementById('photo-input').click();
         };
     });
 </script>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tags_for_messanger %}
 {% block title %}Messanger{% endblock title %}
 {% block content %}
 <div class="mt-3">
@@ -8,20 +9,28 @@
             <div class="list-group" id="chat-list">
                 <!-- Список чатов -->
                 {% for chat_detail in chat_details %}
-                <a href="{% url "messanger:dialogue" chat_detail.other_participant.username %}" class="list-group-item list-group-item-action">
+                <a href="{% url "messanger:dialogue" chat_detail.other_participant.username %}" 
+                {% if not chat_detail.last_message.is_read and chat_detail.last_message.sender != request.user %}style="background-color:#B5B3B3"{% endif %}
+                 class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
                         <div class="d-flex">
                             <img style="border-radius: 50%;" src="{{ chat_detail.other_participant.avatar.url }}" width="50" height="50" alt="">
                             <div class="ml-3">
                                 <h5 class="mb-1">{{ chat_detail.other_participant.first_name }} {{ chat_detail.other_participant.last_name }}</h5>
-                                <p class="mb-1" style="margin-bottom: 0;">{{ chat_detail.last_message.content|truncatechars:54 }}</p>
+                                <p class="mb-1" style="margin-bottom: 0;">
+                                    {% if chat_detail.last_message.content %}
+                                        {{ chat_detail.last_message.content|truncatechars:54 }}
+                                    {% elif not chat_detail.last_message.content and chat_detail.last_message.file %} 
+                                        {{ chat_detail.last_message.file.name|get_name|truncatechars:54  }}
+                                    {% endif %}
+                                </p>
 
                             </div>
                         </div>
                         <small>{{ chat_detail.last_message.get_timestamp }}</small>
                     </div>
                 </a>
-                
+            
                 {% endfor %}
             </div>
         </div>

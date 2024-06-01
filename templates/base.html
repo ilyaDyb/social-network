@@ -66,15 +66,14 @@
     
     updateUserStatus('online');
     
-    setInterval(() => updateUserStatus('online'), 15000);
-    window.addEventListener("beforeunload", () => updateUserStatus('offline'));
-    window.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") {
-            updateUserStatus('offline');
-        } else {
-            updateUserStatus('online');
-        }
-    });
+    const intervalId = setInterval(() => updateUserStatus('online'), 15000);
+    
+    window.onbeforeunload = function() {
+        updateUserStatus('offline');
+        clearInterval(intervalId);
+    };
+    
+    window.removeEventListener("visibilitychange", handleVisibilityChange);
     </script>
     {% block scripts %}{% endblock scripts %}
 </body>

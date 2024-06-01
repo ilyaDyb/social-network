@@ -19,7 +19,7 @@
             <input type="file" id="fileInput" style="display: none;">
             <div>
                 <h1 style="margin-left:30px;">{{ user.first_name }} {{ user.last_name }}</h1>
-                <p style="color:gray; margin-left:30px;">{% if activity.is_online == False %}Last seen {{ activity.get_last_activity }} {% elif activity.is_online == True %} Online{% endif %}</p>
+                <p style="color:gray; margin-left:30px;">{% if is_online %} Online {% elif not is_online %}Last seen {{ last_activity }}{% endif %}</p>
 
                 <p class="profile-bio" id="shortInf" style="margin-left:30px;">{% if user.user_profile.small_info %}{{ user.user_profile.small_info }}{% else %}No information{% endif %}
                     {% if request.user.username == user.username %}

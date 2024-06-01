@@ -63,13 +63,19 @@ def dialogue_page(request, username):
     chat_id = current_chat.id
 
     messages = Chat.get_messages(current_chat)
-    user_activity = user_sender.activity
+    is_online, last_activity = user_sender.activity.is_online, user_sender.activity.get_last_activity()
+
+    if last_activity[0] == "0":
+        is_online = True
+
+    messages.filter(sender=user_sender).update(is_read=True) #need fix and add this to background task, because a lot of time need for load page
 
     context = {
         "messages": messages,
         "user_sender": user_sender,
         "user_receiver": user_receiver,
-        "user_activity": user_activity,
+        "is_online": is_online,
+        "last_activity": last_activity,
         "chat_id": chat_id,
     }
     return render(request, "messanger/dialogue_page.html", context=context)
