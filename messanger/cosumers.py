@@ -71,7 +71,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_status(self, user):
-        if user.activity.get_last_activity[0] == "0":
+        if user.activity.get_last_activity()[0] == "0":
             return True
         return user.activity.is_online
     

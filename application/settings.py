@@ -87,8 +87,14 @@ ASGI_APPLICATION = 'application.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
-    }
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+            "capacity": 15000,
+            "expiry": 10,
+            "group_expiry": 60,
+        },
+    },
 }
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -161,3 +167,7 @@ WEBPUSH_SETTINGS = {
     "VAPID_PRIVATE_KEY": "ChEEPpC2qzFSWn-9KJC2EO4YiCLTZPCCqdvuGI-5GRQ",
     "VAPID_ADMIN_EMAIL": "ilyachannel1.0@gmail.com"
 }
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

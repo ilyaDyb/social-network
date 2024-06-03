@@ -9,13 +9,22 @@ def tools_get_timestamp(timestamp):
     if time_difference_in_minutes < 1:
         return f"{int(time_difference_in_minutes * 60)} seconds ago."
     elif time_difference_in_minutes < 60:
-        return f"{int(time_difference_in_minutes)} minutes ago."
+        if int(time_difference_in_minutes) == 1:
+            return f"{int(time_difference_in_minutes)} minute ago."
+        else:
+            return f"{int(time_difference_in_minutes)} minutes ago."
     elif time_difference_in_minutes < 1440:
-        return f"{int(time_difference_in_minutes // 60)} hours ago."
+        if int(time_difference_in_minutes // 60) == 1:
+            return f"{int(time_difference_in_minutes // 60)} hour ago."
+        else:
+            return f"{int(time_difference_in_minutes // 60)} hours ago."
     elif time_difference_in_minutes < 4320:
-        return f"{int(time_difference_in_minutes // 1440)} days ago."
+        if int(time_difference_in_minutes // 1440) == 1:
+            return f"{int(time_difference_in_minutes // 1440)} day ago."
+        else:
+            return f"{int(time_difference_in_minutes // 1440)} day ago."
     else:
-        return timestamp.strftime("%d %B %H:%M")
+        return timestamp.strftime("%d %B %H:%M.")
     
 def photo_validate(photo):
     index = str(photo).rfind(".")

@@ -3,6 +3,7 @@
 {% block title %}Messanger{% endblock title %}
 {% block styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{% static "posts/style.css" %}">
 <style>
     .input-group {
         display: flex;
@@ -73,7 +74,7 @@
                                             {{ message.content }}
                                             <small style="background-color: #9966cc;" class="text-dark">{{ message.get_timestamp }}</small>
                                             {% if message.file %}
-                                                <img src="{{ message.file.url }}" alt="" class="message-image mt-2">
+                                                <img src="{{ message.file.url }}" data-image="{{ message.file.url }}" style="object-fit: cover;" class="message-image mt-2">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -85,7 +86,7 @@
                                             {{ message.content }}
                                             <small style="background-color: #9966cc;" class="text-dark">{{ message.get_timestamp }}</small>
                                             {% if message.file %}
-                                                <img src="{{ message.file.url }}" alt="" class="message-image mt-2">
+                                                <img src="{{ message.file.url }}" data-image="{{ message.file.url }}" style="object-fit: cover;" alt="" class="message-image mt-2">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -128,6 +129,10 @@
 </div>
 <input type="hidden" name="chatId" id="chatId" value="{{ chat_id }}">
 <input type="hidden" name="user_receiver" id="user_receiver_id" value="{{ user_receiver.id }}">
+<div id="modalPost" class="modal">
+    <span class="close-modal">&times;</span>]
+    <img id="modalPostImg" src="" alt="Photo">
+</div>
 {% endblock content %}
 {% block scripts %}
 <script>
@@ -185,8 +190,11 @@
             const messageInput = document.getElementById('chat-message-input');
             const fileEl = document.getElementById('photo-input');
             const file = fileEl.files[0];
-            const message = messageInput.value;
-
+            const message = messageInput.value.trim();
+            if (!file && !message) {
+                alert("You can't send absolutly empty message")
+                return
+            }
             if (file) {
                 const formData = new FormData();
                 formData.append('photo', file);
@@ -220,6 +228,21 @@
             messageInput.value = '';
             fileEl.value = '';
         };
+    });
+    var modal = $("#photoModal");
+    var modalImg = $("#modalPhoto");
+    var closeModalBtn = $(".close-modal");
+    var photoId = null;
+
+    $(".message-image").click(function () {
+        var imageUrl = $(this).data("image");
+        $("#modalPostImg").attr("src", imageUrl);
+        $("#modalPost").show();
+    })
+
+    closeModalBtn.click(function() {
+        modal.hide();
+        $("#modalPost").hide();
     });
 </script>
 {% endblock scripts %}

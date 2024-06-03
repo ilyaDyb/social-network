@@ -11,6 +11,7 @@ from application import settings
 from messanger.models import Chat, ChatManager
 from users.models import Users
 from tools import photo_validate
+from .tasks import read_last_messages
 
 
 @login_required
@@ -68,7 +69,8 @@ def dialogue_page(request, username):
     if last_activity[0] == "0":
         is_online = True
 
-    messages.filter(sender=user_sender).update(is_read=True) #need fix and add this to background task, because a lot of time need for load page
+    if messages.filter(sender=user_sender, is_read=False).exists():
+        read_last_messages.delay(user_id=user_sender.id, chat_id=chat_id)
 
     context = {
         "messages": messages,

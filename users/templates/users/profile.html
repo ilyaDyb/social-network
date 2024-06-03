@@ -96,7 +96,7 @@
             <div class="profile-posts" id="post_{{ post.id }}" style="margin-top: {% if forloop.counter > 1 %}20px{% endif %};">
                 <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px;">
                     <div class="container">
-                        <div class="post-header" style="position: relative; top:10px;">
+                        <div class="post-header p-2" style="position: relative; top:10px;">
                             <a href="{% url "users:profile" post.user.username %}">
                                 <img style="border-radius: 50%;" src="{{ post.user.avatar.url }}" alt="" width="50" height="50">
                             </a>
@@ -110,8 +110,8 @@
                             <p>{{ post.text }}</p>
                         </div>
                         {% if post.image %}
-                            <div style="position: relative; top:10px;">
-                                <img class="rounded-3 post-photo" src="{{ post.image.url }}" data-image="{{ post.image.url }}" width="625" style="max-width: 625px; max-height: 500px; object-fit: cover;">
+                            <div style="position: relative; top:10px; max-width: 580px;">
+                                <img class="rounded-3 post-photo" src="{{ post.image.url }}" data-image="{{ post.image.url }}" style="max-width: 625px; max-height: 500px; object-fit: cover;">
                             </div>
                         {% endif %}
                         <div class="post-actions" style="margin-top: 20px;">
