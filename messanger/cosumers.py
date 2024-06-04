@@ -1,10 +1,10 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Message, Chat
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
 from webpush import send_user_notification
-from asgiref.sync import sync_to_async
+
+from .models import Message, Chat
 
 User = get_user_model()
 
@@ -19,7 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
         await self.accept()
 
-    async def disconnect(self, code):
+    async def disconnect(self):
         await self.channel_layer.group_discard(
             self.group_name,
             self.channel_name

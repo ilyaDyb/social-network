@@ -15,12 +15,13 @@
                 </div>
                 {% if post.image %}
                     <div style="position: relative; top:10px; max-width: 580px;">
-                        <img class="rounded-3 post-photo" src="{{ post.image.url }}" data-image="{{ post.image.url }}" style="max-width: 625px; max-height: 500px; object-fit: cover;">
+                        <img class="rounded-3 post-photo" src="{{ post.image.url }}"  style="max-width: 625px; max-height: 500px; object-fit: cover;">
                     </div>
                 {% endif %}
                 <div class="post-actions" style="margin-top: 20px;">
-                    <img class="likeBtn" src="{% static "images/heart_before.png" %}" width="32" height="32" alt="" srcset=""
+                    <img class="likeBtn" src="{% static "images/heart_before.png" %}" data-post-id="{{ post.id }}" width="32" height="32" alt="" srcset=""
                     data-heart-after="{% static "images/heart_after.png" %}">
+                    <span id="likes-{{ post.id }}">{{ post.likes.count }}</span>
                 </div>
                 <div class="m-1">
                     <a href="{% url "users:profile" user.username %}">
@@ -39,10 +40,15 @@
                 </div>
             </div>
         </div>
-        
-        <div id="modalPost" class="modal">
-            <span class="close-modal">&times;</span>]
-            <img id="modalPostImg" src="" alt="Photo">
-        </div>
     </div>
-    {% endfor %}
+{% endfor %}
+{% comment %} <div style="margin-left: 35px; width: auto;">
+    <img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+    <a href="">Ilya Dybovsky</a>
+    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+    <hr style="margin: 0; padding: 0;">
+</div> Answers
+<img style="border-radius: 50%;" src="{{ user.avatar.url }}" alt="" width="34" height="34">
+<a href="">Ilya Dybovsky</a>
+<span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla architecto earum quidem alias atque sapiente cupiditate sunt quod eius, delectus asperiores quisquam autem eveniet libero ipsam odio assumenda animi voluptas?</span>
+<hr style="margin: 0; padding: 0;"> {% endcomment %}

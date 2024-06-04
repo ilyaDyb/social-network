@@ -1,7 +1,34 @@
 $(document).ready(function () {
+    var cnt = 0;
     $(".likeBtn").click(function () {
-        var newImage = $(this).data("heart-after");
-        $(this).attr("src", newImage);
+        var postId = $(this).data("post-id")
+        if (cnt % 2 === 0) {
+            $(this).attr("src", "/static/images/heart_after.png");
+        }
+        else if (cnt % 2 === 1) {
+            $(this).attr("src", "/static/images/heart_before.png");
+        };
+        cnt++
+        $.ajax({
+            url: "http://" + window.location.host + "/like-post/",
+            type: "POST",
+            data: { post_id : postId },
+            success: function (data) {
+                likeId = "#likes-" + postId;
+                var likes = parseInt($(likeId).text());
+                if (data.status === "liked"){
+                    likes++;
+                    $(likeId).text(likes);
+                }
+                else if (data.status === "unliked"){
+                    likes--;
+                    $(likeId).text(likes);
+                }
+            },
+            error: function (data) {
+                console.log("error")
+            }
+        });
     });
 
     var hasNextPage = $("#nextPage").val() !== "None";

@@ -6,7 +6,7 @@ $(document).ready(function() {
     var photoId = null;
 
     $(".post-photo").click(function () {
-        var imageUrl = $(this).data("image");
+        var imageUrl = $(this).attr("src");
         $("#modalPostImg").attr("src", imageUrl);
         $("#modalPost").show();
     })
@@ -15,6 +15,7 @@ $(document).ready(function() {
         event.preventDefault();
         var imageUrl = $(this).data("image");
         photoId = $(this).data("photo-id");
+        console.log(imageUrl)
         modalImg.attr("src", imageUrl);
         modal.show();
     });
@@ -27,7 +28,6 @@ $(document).ready(function() {
     deletePhotoBtn.click(function() {
         console.log("click")
         if (photoId) {
-            console.log("if")
             $.ajax({
                 type: "POST",
                 url: "http://" + window.location.host + "/photos/delete/",

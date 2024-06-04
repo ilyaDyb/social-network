@@ -8,3 +8,4 @@ If you want to start it:
 6. You should use python-dotenv for token (pip install python-dotenv, then .env: REPLICATE_API_TOKEN=<paste-your-token-here>). (You can get it after authorization on https://replicate.com/)
 7. Then you can use full functional in the application
 python3 manage.py runserver
+______________________________________________________

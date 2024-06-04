@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
@@ -27,7 +27,25 @@ def feed(request):
     
     if request.method == "POST":
         user = request.user
-        html = render_to_string("posts/more_posts.html", context={"posts": current_page, "user": user})
+        html = render_to_string("includes/posts.html", context={"posts": current_page, "user": user})
         return JsonResponse({"html": html}, safe=False)
 
     return render(request, "posts/feed.html", context=context)
+
+
+@csrf_exempt
+@login_required
+def like_post(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        post = get_object_or_404(Post, id=post_id)
+        user = request.user
+        if not user in post.likes.all():
+            post.likes.add(user)
+            return JsonResponse({"status": "liked"})
+        else:
+            post.likes.remove(user)
+            return JsonResponse({"status": "unliked"})
+
+    else:
+        return HttpResponse(status=404)
