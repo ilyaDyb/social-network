@@ -55,12 +55,16 @@ def like_post(request):
 def write_comment(request):
     if request.method == "POST":
         post_id = request.POST.get("post_id")
-        comment_text = request.POST.get("comment_text")
-        comment = Comment.objects.create(
-            post_id=post_id, user=request.user, text=comment_text
-            )
-        comment_html = render_to_string("includes/comments.html", context={"comment": comment})
-        return JsonResponse({"html": comment_html}, status=200, safe=False)
+        comment_text = request.POST.get("comment_text").strip()
+        file = request.FILES.get("file")
+        if comment_text or file:
+            comment = Comment.objects.create(
+                post_id=post_id, user=request.user, file=file if file else None, text=comment_text if comment_text else ""
+                )
+            comment_html = render_to_string("includes/comments.html", context={"comment": comment})
+            return JsonResponse({"html": comment_html}, status=200, safe=False)
+        else:
+            return JsonResponse({}, status=500)
     else:
         return JsonResponse({}, status=400)
     

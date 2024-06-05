@@ -59,13 +59,32 @@ $(document).ready(function () {
             loadMorePosts();
         };
     });
-    $(".sendCommentBtn").click(function () {
-        var postId = $(this).data("post-id");
-        var commentText = $(this).prevAll(".commentText").val();
+    $(document).on("click", ".sendCommentBtn", function () {
+        event.preventDefault();
+
+        var $this = $(this);
+        var postId = $this.data("post-id");
+        var commentText = $this.siblings(".commentText").val();
+        var fileInput = $this.siblings("input[type='file']")[0];
+        var file = fileInput.files[0];
+
+        if (!commentText && !file) {
+            alert("Write a comment or choose file please");
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append("post_id", postId);
+        formData.append("comment_text", commentText);
+        if (file) {
+            formData.append("file", file);
+        }
         $.ajax({
             url: "/write-comment/",
             type: "POST",
-            data: { post_id : postId, comment_text : commentText},
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (data) {
                 $("#post-comments_" + postId).append(data.html);
             },
@@ -74,22 +93,33 @@ $(document).ready(function () {
             }
         })
     });
-    var cnt = 0
     $(".comments-btn").click(function (event) {
-        postId = $(this).data("post-id");
-        if (cnt === 0) {     
+        var $this = $(this);
+        var postId = $this.data("post-id");
+        var cnt = $this.data("cnt");
+
+        if (cnt === 0) {
             $.ajax({
                 url: "/show-comments/",
                 type: "POST",
-                data: { post_id : postId },
+                data: { post_id: postId },
                 success: function (data) {
                     $("#post-comments_" + postId).append(data.html);
                     cnt++;
+                    $this.data("cnt", cnt);
                 },
                 error: function (data) {
-                   console.log("Error") ;
+                    console.log("Error");
                 },
             });
-        };
+        } else if (cnt % 2 === 1) {
+            $("#post-comments_" + postId).hide();
+            cnt++;
+            $this.data("cnt", cnt);
+        } else if (cnt % 2 === 0) {
+            $("#post-comments_" + postId).show();
+            cnt++;
+            $this.data("cnt", cnt);
+        }
     });
 });

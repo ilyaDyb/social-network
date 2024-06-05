@@ -4,12 +4,12 @@ $(document).ready(function() {
     var closeModalBtn = $(".close-modal");
     var deletePhotoBtn = $(".delete-photo-btn");
     var photoId = null;
-
-    $(".post-photo").click(function () {
+    
+    $(document).on('click', '.post-photo', function () {
         var imageUrl = $(this).attr("src");
         $("#modalPostImg").attr("src", imageUrl);
         $("#modalPost").show();
-    })
+    });
 
     $(".photo-link").click(function(event) {
         event.preventDefault();
@@ -26,7 +26,6 @@ $(document).ready(function() {
     });
 
     deletePhotoBtn.click(function() {
-        console.log("click")
         if (photoId) {
             $.ajax({
                 type: "POST",

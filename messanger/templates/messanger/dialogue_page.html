@@ -100,21 +100,6 @@
                     <button class="form-control" id="chat-message-submit">Send</button>
                     <input type="file" id="photo-input" class="btn btn-info form-control">
                 </form>
-                {% comment %} <div class="card-footer">
-                    <form id="message-form" method="post" action="{% url 'messanger:dialogue' user_sender.username %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <textarea name="message" class="form-control" placeholder="Type your message here..." rows="1" style="resize: none;"></textarea>
-                            <input type="file" name="photo" accept="image/*" class="d-none" id="photo-input">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" id="upload-photo-btn">
-                                    <i class="fas fa-paperclip"></i>
-                                </button>
-                                <button class="btn btn-primary" type="submit">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div> {% endcomment %}
             </div>
         </div>
         <div class="col-md-3">

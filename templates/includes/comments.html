@@ -1,18 +1,28 @@
 {% if comments %}
     {% for comment in comments %}
-        <div style="margin-bottom: 20px;">
+        <div style="margin-bottom: 20px; margin-left: 5px;">
             <img style="border-radius: 50%;" src="{{ comment.user.avatar.url }}" alt="" width="34" height="34">
-            <a href="">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
+            <a href="{% url "users:profile" comment.user.username %}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
             <span>{{ comment.text }}</span>
+            {% if comment.file %}
+                <div>
+                    <img class="rounded-3 post-photo" src="{{ comment.file.url }}" style="object-fit: cover; max-width: 500px; max-height: 500px;" class="mt-2" onclick="testFunc()">
+                </div>
+            {% endif %}
             <hr style="margin: 0; padding: 0;">
         </div>
     {% endfor %}
 {% endif %}
 {% if comment %}
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom: 20px; margin-left: 5px;">
         <img style="border-radius: 50%;" src="{{ comment.user.avatar.url }}" alt="" width="34" height="34">
-        <a href="">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
+        <a href="{% url "users:profile" comment.user.username %}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
         <span>{{ comment.text }}</span>
+        {% if comment.file %}
+            <div>
+                <img class="rounded-3 post-photo" src="{{ comment.file.url }}" style="object-fit: cover; max-width: 500px; max-height: 500px;" class="mt-2">
+            </div>
+        {% endif %}
         <hr style="margin: 0; padding: 0;">
     </div>
 {% endif %}
