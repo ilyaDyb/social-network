@@ -1,32 +1,30 @@
 $(document).ready(function () {
-    var cnt = 0;
     $(".likeBtn").click(function () {
-        var postId = $(this).data("post-id")
-        if (cnt % 2 === 0) {
-            $(this).attr("src", "/static/images/heart_after.png");
-        }
-        else if (cnt % 2 === 1) {
-            $(this).attr("src", "/static/images/heart_before.png");
-        };
-        cnt++
+        var postId = $(this).data("post-id");
+        var likeId = "#likes-" + postId;
+        var heartBeforeUrl = "/static/images/heart_before.png";
+        var heartAfterUrl = "/static/images/heart_after.png";
+        var $this = $(this);
         $.ajax({
-            url: "http://" + window.location.host + "/like-post/",
+            url: "/like-post/",
             type: "POST",
-            data: { post_id : postId },
+            data: {
+                post_id: postId,
+            },
             success: function (data) {
-                likeId = "#likes-" + postId;
                 var likes = parseInt($(likeId).text());
-                if (data.status === "liked"){
+                if (data.status === "liked") {
                     likes++;
+                    $this.attr("src", heartAfterUrl);
                     $(likeId).text(likes);
-                }
-                else if (data.status === "unliked"){
+                } else if (data.status === "unliked") {
                     likes--;
+                    $this.attr("src", heartBeforeUrl);
                     $(likeId).text(likes);
                 }
             },
             error: function (data) {
-                console.log("error")
+                console.log("error");
             }
         });
     });
@@ -35,7 +33,6 @@ $(document).ready(function () {
 
     function loadMorePosts() {
         var nextPage = parseInt($("#nextPage").val());
-        console.log(nextPage)
         if (hasNextPage) {
             $.ajax({
                 url: "http://" + window.location.host + "/feed/?page=" + nextPage,
@@ -60,6 +57,39 @@ $(document).ready(function () {
     $(window).scroll(function() {
         if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
             loadMorePosts();
+        };
+    });
+    $(".sendCommentBtn").click(function () {
+        var postId = $(this).data("post-id");
+        var commentText = $(this).prevAll(".commentText").val();
+        $.ajax({
+            url: "/write-comment/",
+            type: "POST",
+            data: { post_id : postId, comment_text : commentText},
+            success: function (data) {
+                $("#post-comments_" + postId).append(data.html);
+            },
+            error: function (error) {
+                console.error(error)
+            }
+        })
+    });
+    var cnt = 0
+    $(".comments-btn").click(function (event) {
+        postId = $(this).data("post-id");
+        if (cnt === 0) {     
+            $.ajax({
+                url: "/show-comments/",
+                type: "POST",
+                data: { post_id : postId },
+                success: function (data) {
+                    $("#post-comments_" + postId).append(data.html);
+                    cnt++;
+                },
+                error: function (data) {
+                   console.log("Error") ;
+                },
+            });
         };
     });
 });

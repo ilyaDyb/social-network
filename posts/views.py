@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
-from .models import Post
+from .models import Comment, Post
 
 @csrf_exempt
 @login_required
@@ -15,6 +15,8 @@ def feed(request):
     page = request.GET.get("page")
     paginator = Paginator(posts, 4)
     current_page = paginator.get_page(page)
+
+
     try:
         next_page = current_page.next_page_number()
     except Exception:
@@ -34,7 +36,6 @@ def feed(request):
 
 
 @csrf_exempt
-@login_required
 def like_post(request):
     if request.method == "POST":
         post_id = request.POST.get("post_id")
@@ -46,6 +47,34 @@ def like_post(request):
         else:
             post.likes.remove(user)
             return JsonResponse({"status": "unliked"})
-
     else:
         return HttpResponse(status=404)
+    
+
+@csrf_exempt
+def write_comment(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        comment_text = request.POST.get("comment_text")
+        comment = Comment.objects.create(
+            post_id=post_id, user=request.user, text=comment_text
+            )
+        comment_html = render_to_string("includes/comments.html", context={"comment": comment})
+        return JsonResponse({"html": comment_html}, status=200, safe=False)
+    else:
+        return JsonResponse({}, status=400)
+    
+
+@csrf_exempt
+def show_comments(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        comments = Comment.objects.filter(post_id=post_id)
+        if comments:
+            comments_html = render_to_string("includes/comments.html", context={"comments": comments})
+            print(comments_html)
+            return JsonResponse({"html": comments_html}, safe=False)
+        else:
+            return JsonResponse({}, status=200)
+    else:
+        return JsonResponse({}, status=400)

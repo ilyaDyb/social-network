@@ -35,7 +35,6 @@ def login(request):
                 auth.login(request, user)
                 messages.success(request, "Successful login")
                 return redirect(reverse("posts:feed"))
-            
     else:
         form = UserLoginForm()
     return render(request, "users/login.html", context={"form": form})

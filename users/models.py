@@ -40,6 +40,9 @@ class Users(AbstractUser):
         to_user_friendships = Friendship.objects.filter(to_user=self, status='accepted').values_list('from_user', flat=True)
         friends_ids = set(list(from_user_friendships) + list(to_user_friendships))
         return Users.objects.filter(id__in=friends_ids)
+    
+    def __str__(self) -> str:
+        return f"{self.username}:{self.pk}"
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="user_profile")

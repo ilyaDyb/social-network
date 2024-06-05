@@ -11,7 +11,6 @@ class Post(models.Model):
     image = models.FileField(upload_to="post_images", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(Users, related_name="liked_posts")
-    comments = models.ManyToManyField('Comment', related_name="posts")
 
     class Meta:
         verbose_name = ("Post")
@@ -28,10 +27,23 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="comments", default=None)
+    # file = models.FileField(upload_to="comment_images")
     user = models.ForeignKey(to=Users, on_delete=models.CASCADE)
     text = models.TextField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f"Comment from {self.user} to post: {self.post.pk}"
 
-# class Answer(models.Model):
-#     ... #foreign key with comment
+
+class Answer(models.Model):
+    user = models.ForeignKey(to=Users, on_delete=models.CASCADE)
+    comment = models.ForeignKey(to=Comment, on_delete=models.CASCADE, related_name="answers")
+    text = models.TextField(blank=False, null=False)
+    # file = models.FileField(upload_to="answer_images")
+    created_at = models.DateTimeField(auto_now_add=True)
+    answer_to = models.ForeignKey(to=Users, on_delete=models.CASCADE, related_name="user_answers")
+
+    def __str__(self):
+        return f"{self.pk} answer by {self.user.username} to {self.answer_to.username}"

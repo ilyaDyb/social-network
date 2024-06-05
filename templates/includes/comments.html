@@ -1,0 +1,18 @@
+{% if comments %}
+    {% for comment in comments %}
+        <div style="margin-bottom: 20px;">
+            <img style="border-radius: 50%;" src="{{ comment.user.avatar.url }}" alt="" width="34" height="34">
+            <a href="">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
+            <span>{{ comment.text }}</span>
+            <hr style="margin: 0; padding: 0;">
+        </div>
+    {% endfor %}
+{% endif %}
+{% if comment %}
+    <div style="margin-bottom: 20px;">
+        <img style="border-radius: 50%;" src="{{ comment.user.avatar.url }}" alt="" width="34" height="34">
+        <a href="">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
+        <span>{{ comment.text }}</span>
+        <hr style="margin: 0; padding: 0;">
+    </div>
+{% endif %}
