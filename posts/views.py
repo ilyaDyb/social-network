@@ -72,7 +72,6 @@ def show_comments(request):
         comments = Comment.objects.filter(post_id=post_id)
         if comments:
             comments_html = render_to_string("includes/comments.html", context={"comments": comments})
-            print(comments_html)
             return JsonResponse({"html": comments_html}, safe=False)
         else:
             return JsonResponse({}, status=200)
