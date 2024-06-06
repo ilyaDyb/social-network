@@ -11,14 +11,17 @@ import os
 
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
+import django
 from django.core.asgi import get_asgi_application
 from channels.layers import get_channel_layer
 from channels.security.websocket import AllowedHostsOriginValidator
 
-import messanger.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'application.settings')
 
+django.setup()
+
+import messanger.routing
 # application = get_asgi_application()
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),

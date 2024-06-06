@@ -15,7 +15,6 @@ $(document).ready(function() {
         event.preventDefault();
         var imageUrl = $(this).data("image");
         photoId = $(this).data("photo-id");
-        console.log(imageUrl)
         modalImg.attr("src", imageUrl);
         modal.show();
     });

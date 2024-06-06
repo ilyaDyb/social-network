@@ -14,11 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
-    # user = Users.objects.get(username="test1")
-    # text = "Crocubot. So, you’re a cold, unfeeling reptile and also an equally cold, and unfeeling machine? Yes. So your origin is what? You fell in a vat of redundancy?"
-
-    # for i in range(1, 4):
-    #     Post.objects.create(user=user, text=text, image=f"post_images/example{i}.webp")
     return render(request, "apps/index.html")
 
 
