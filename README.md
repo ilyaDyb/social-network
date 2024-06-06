@@ -2,7 +2,7 @@ This is my social-network something like facebook or VK, but have less functions
 If you want to start project:
 1. Create workdir and write: <b>git clone https://github.com/ilyaDyb/social-network.git</b>
 2. Then: <b style="text-decoration: underline;">cd social-network/</b> and <span style="text-decoration: underline">docker-compose up</span>
-3. !You should use python-dotenv for token (pip install python-dotenv, then .env: REPLICATE_API_TOKEN=<paste-your-token-here>). (You can get it after authorization on https://replicate.com/) #this will be install automatically if future
+3. !You should use python-dotenv for token (create file ".env" in workdir and write: REPLICATE_API_TOKEN=<paste-your-token-here>). (You can get it after authorization on https://replicate.com/) #this will be install automatically in future
 
 But you won’t be able to see all the beauty of the application without test users without any activities (created posts, changed the avatar, etc.)
 
