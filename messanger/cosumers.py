@@ -2,7 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
-from webpush import send_user_notification
+# from webpush import send_user_notification
 
 from .models import Message, Chat
 
@@ -55,7 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "icon": user.avatar,
                 "url": f"chat/{chat_id}/"
             }
-            send_user_notification(user=other_user, payload=payload, ttl=1000)
+            # send_user_notification(user=other_user, payload=payload, ttl=1000)
 
 
     async def chat_message(self, event):
