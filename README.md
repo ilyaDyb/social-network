@@ -7,7 +7,7 @@ If you want to start project:
     LOAD_FIXTURES=0
     ```
 But you won’t be able to see all the beauty of the application without test users without any activities (created posts, changed the avatar, etc.)
-
+If you load fixtures then you can login how username: test3, password: qwertyuiop2014
 
 If you are a recruiter and you are interested in me along with my project, please call or write, I can show all the functionality and explain why I used something here or somewhere else.
 My contacts:
