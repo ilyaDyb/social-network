@@ -1,0 +1,1 @@
+[{"model": "messanger.chat", "pk": 1, "fields": {"participant1": 8, "participant2": 4}}, {"model": "messanger.chat", "pk": 2, "fields": {"participant1": 8, "participant2": 10}}, {"model": "messanger.chat", "pk": 3, "fields": {"participant1": 8, "participant2": 6}}]

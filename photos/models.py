@@ -1,7 +1,5 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.urls import reverse
-from django.core.exceptions import ValidationError
 
 from users.models import Users
 

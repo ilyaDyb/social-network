@@ -13,5 +13,5 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
-
+ENTRYPOINT [ "/app/entrypoint.sh" ]
 CMD [ "uvicorn", "application.asgi:application", "--host", "0.0.0.0", "--port", "8000" ]
