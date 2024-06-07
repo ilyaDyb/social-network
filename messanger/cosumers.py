@@ -35,7 +35,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user = await self.get_user(user_id)
             chat = await self.get_chat(chat_id)
             other_user = await self.get_other_user(chat, user)
-            other_user_activity = await self.get_status(user=other_user)
+            # other_user_activity = await self.get_status(user=other_user)
 
             await self.save_message(user, chat, other_user, message, str(file_url)[6:])
 
@@ -48,13 +48,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'file_url': file_url,
                 }
             )
-        if other_user_activity:
-            payload = {
-                "type": "New message",
-                "message": message if message else "You have received a new file.",
-                "icon": user.avatar,
-                "url": f"chat/{chat_id}/"
-            }
+        # if other_user_activity:
+        #     payload = {
+        #         "type": "New message",
+        #         "message": message if message else "You have received a new file.",
+        #         "icon": user.avatar,
+        #         "url": f"chat/{chat_id}/"
+        #     }
             # send_user_notification(user=other_user, payload=payload, ttl=1000)
 
 
