@@ -26,7 +26,6 @@ class Users(AbstractUser):
     first_name = models.CharField(max_length=20, blank=False, null=False)
     last_name = models.CharField(max_length=20, blank=False, null=False)
     avatar = models.ImageField(upload_to="users_avatars", blank=True, null=True, default="User-avatar.svg.png")
-    friends = models.ManyToManyField("self", through="Friendship", related_name="user_friends")
 
     # PRIVACY_CHOICE = (("yes", "yes"), ("no", "no"))
     # privacy = models.CharField(max_length=3, choices=PRIVACY_CHOICE, default="no")

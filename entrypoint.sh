@@ -12,5 +12,5 @@ else
 fi
 
 python manage.py collectstatic --noinput
-
+uvicorn application.asgi:application --host 0.0.0.0 --port 8000
 exec "$@"
