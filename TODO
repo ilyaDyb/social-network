@@ -1,25 +1,10 @@
-<!-- <ul>
-    <li> <b>-</b> text</li>
-</ul> -->
-<h1>TODO start with June 8 2024</h1>
+TODO start with June 8 2024
 Notifications:
-<ul>
-    <li> <b>-</b> send notifications about messages from other users</li>
-</ul>
+- send notifications about messages from other users
 Auth:
-<ul>
-    <li><b>-</b> registration with email confirmation</li>
-    <li><b>-</b> more functionallity for auth mb</li>
-</ul>
+- registration with email confirmation
+- more functionallity for auth mb
 Frontend:
-<ul>
-    <li> <b>-</b> fix display for posts photo</li>
-</ul>
+- fix display for posts photo
 Make development and deployment more convenient:
-<ul>
-    <li> <b>-</b> upgrade Dockerfile and docker-compose for deployment on nginx</li>
-</ul>
-Others:
-<ul>
-    <li> <b>-</b> While nothing</li>
-</ul>
+- upgrade Dockerfile and docker-compose for deployment on nginx
