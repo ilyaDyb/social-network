@@ -35,7 +35,7 @@ $(document).ready(function () {
         var nextPage = parseInt($("#nextPage").val());
         if (hasNextPage) {
             $.ajax({
-                url: "http://" + window.location.host + "/feed/?page=" + nextPage,
+                url: "/feed/?page=" + nextPage,
                 type: 'POST',
                 success: function (data) {
                     $("#posts-block").append(data.html);

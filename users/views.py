@@ -15,6 +15,8 @@ from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
 from .validators import validate_create_post
 
+
+@csrf_exempt
 def login(request):
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
