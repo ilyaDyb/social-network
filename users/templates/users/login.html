@@ -17,11 +17,7 @@
           <form action="{% url "users:login" %}" method="POST">
             {% csrf_token %}
             {% if form.errors %}
-              {% for field in form %}
-                  {% for error in field.errors %}
-                      <li>{{ error }}</li>
-                  {% endfor %}
-              {% endfor %}
+              <h5>Invalid login or password or your account does not varified</h5>
             {% endif %}
             <div class="row">
               <i class="fas fa-user"></i>

@@ -7,6 +7,7 @@ app_name = "users"
 urlpatterns = [
     path('login/', views.login, name='login'),
     path('registration/', views.registration, name='registration'),
+    path('registration/verify/<str:token>/', views.verify_user, name='verify_user'),
     path('logout/', views.logout, name='logout'),
 
     path('profile/edit-img/', views.edit_profile_img, name='edit_profile_img'),

@@ -9,6 +9,12 @@ If you want to start project:
 But you won’t be able to see all the beauty of the application without test users without any activities (created posts, changed the avatar, etc.)
 If you load fixtures then you can login how username: test3, password: qwertyuiop2014
 
+And i don't add automatically start celery with redis, you should to use this commands in diffirent consoles:
+
+1. `celery -A application worker -P solo --loglevel=INFO `
+2. `celery -A application beat -l info`
+
+
 If you are a recruiter and you are interested in me along with my project, please call or write, I can show all the functionality and explain why I used something here or somewhere else.
 My contacts:
 1. Phone number: <b>+79170760362</b>

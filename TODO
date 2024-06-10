@@ -2,7 +2,8 @@ TODO start with June 8 2024
 Notifications:
 + send notifications with sound about messages from other users
 Auth:
-- registration with email confirmation
++ registration with email confirmation
+- add auto-deleting Temprory Users with pereodic tasks
 - more functionallity for auth mb
 Frontend:
 - fix display for posts photo
@@ -11,6 +12,7 @@ Messanger:
 - load only part of the messages
 Make development and deployment more convenient:
 - upgrade Dockerfile and docker-compose for deployment on nginx
+- add auto start celery with redis
 Optimization:
 - Caching for popular users
 Users:

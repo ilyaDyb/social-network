@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -42,6 +43,10 @@ class Users(AbstractUser):
     
     def __str__(self) -> str:
         return f"{self.username}:{self.pk}"
+    
+class TemporaryUser(models.Model):
+    user = models.OneToOneField(Users, on_delete=models.CASCADE)
+    verification_token = models.CharField(max_length=256)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="user_profile")

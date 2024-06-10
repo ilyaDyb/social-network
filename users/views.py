@@ -7,12 +7,14 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.db.models import Q
+from django.utils.crypto import get_random_string
 
 from posts.models import Post
 
-from .models import Friendship, UserActivity, UserProfile, Users
+from .models import Friendship, TemporaryUser, UserActivity, UserProfile, Users
 from .forms import UserLoginForm, UserRegistrationForm
 from .utils import authenticate_by_email
+from .tasks import send_email_for_confirmation
 from .validators import validate_create_post
 
 
@@ -42,21 +44,35 @@ def login(request):
     return render(request, "users/login.html", context={"form": form})
 
 def registration(request):
+    if request.user.is_authenticated:
+        return HttpResponse(status=404)
+    
     if request.method == "POST":
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
-            form.save()
-            user = Users.objects.get(username=form.cleaned_data["username"])
-            UserProfile.objects.create(user=user)
-            messages.success(request, "Account created successfully")
+            user = form.save(commit=False)
+            user.is_active = True
+            user.save()
+            token = get_random_string(20)
+            TemporaryUser.objects.create(user=user, verification_token=token)
+            send_email_for_confirmation.delay(user.email, token)
+            messages.success(request, "Account created successfully. Please check your email to verify your account.")
             return redirect(reverse("users:login"))
     else:
         form = UserRegistrationForm()
-    if request.user.is_authenticated:
-        return HttpResponse(status=404)
     return render(request, "users/registration.html", context={"form": form})
 
-
+def verify_user(request, token):
+    try:
+        temp_user = TemporaryUser.objects.get(verification_token=token)
+        user = temp_user.user
+        user.is_active = True
+        temp_user.delete()
+        messages.success(request, "Your account has been verified successfully.")
+        return redirect(reverse("users:login"))
+    except TemporaryUser.DoesNotExist:
+        messages.error(request, "Invalid verification token.")
+        return redirect("users:registration")
 
 @login_required
 def logout(request):
