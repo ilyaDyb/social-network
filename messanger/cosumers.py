@@ -2,6 +2,8 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
+
+from users.models import Users
 # from webpush import send_user_notification
 
 from .models import Message, Chat
@@ -35,7 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user = await self.get_user(user_id)
             chat = await self.get_chat(chat_id)
             other_user = await self.get_other_user(chat, user)
-            # other_user_activity = await self.get_status(user=other_user)
+            other_user_activity = await self.get_status(user=other_user)
 
             await self.save_message(user, chat, other_user, message, str(file_url)[6:])
 
@@ -48,15 +50,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'file_url': file_url,
                 }
             )
-        # if other_user_activity:
-        #     payload = {
-        #         "type": "New message",
-        #         "message": message if message else "You have received a new file.",
-        #         "icon": user.avatar,
-        #         "url": f"chat/{chat_id}/"
-        #     }
-            # send_user_notification(user=other_user, payload=payload, ttl=1000)
 
+            if other_user_activity:
+                print(f"Sending notification to user_{other_user.id}_notifications")
+                await self.channel_layer.group_send(
+                    f"user_{other_user.id}_notifications",
+                    {
+                        "type": "notification_message",
+                        "message": message if message else "You have received a new file.",
+                        "chat_id": chat_id,
+                        "user_id": user_id
+                    }
+                )
 
     async def chat_message(self, event):
         message = event['message']
@@ -90,3 +95,41 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def save_message(self, user, chat, other_user, content, file_url):
         Message.objects.create(sender=user, receiver=other_user, chat=chat, content=content, file=file_url)
+
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user_id = self.scope["url_route"]["kwargs"]["user_id"]
+        self.group_name = f"user_{self.user_id}_notifications"
+
+        await self.channel_layer.group_add(
+            self.group_name,
+            self.channel_name,
+        )
+        await self.accept()
+
+        print(f"User {self.user_id} connected to notifications")
+
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(
+            self.group_name,
+            self.channel_name
+        )
+
+        print(f"User {self.user_id} disconnected from notifications")
+
+    async def notification_message(self, event):
+        print(f"Notification for user {self.user_id}: {event}")
+        message = event["message"]
+        chat_id = event["chat_id"]
+        user_id = event["user_id"]
+        username = await self.get_username(user_id)
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'chat_id': chat_id,
+            'username': username,
+        }))
+
+    @database_sync_to_async
+    def get_username(self, user_id):
+        return Users.objects.get(pk=user_id).username

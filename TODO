@@ -1,10 +1,17 @@
 TODO start with June 8 2024
 Notifications:
-- send notifications about messages from other users
++ send notifications with sound about messages from other users
 Auth:
 - registration with email confirmation
 - more functionallity for auth mb
 Frontend:
 - fix display for posts photo
+- fix display notifications (it display in one place)
+Messanger:
+- load only part of the messages
 Make development and deployment more convenient:
 - upgrade Dockerfile and docker-compose for deployment on nginx
+Optimization:
+- Caching for popular users
+Users:
+- fix user's activity (bug with status when user is offline)

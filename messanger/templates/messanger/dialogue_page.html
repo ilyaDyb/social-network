@@ -127,10 +127,15 @@
     document.addEventListener("DOMContentLoaded", function() {
         const chatId = "{{ chat_id }}";
         const userId = "{{ user_receiver.id }}";
+        const userSender = "{{ user_sender.id }}"
         const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + chatId + "/");
 
         socket.onopen = function() {
-            console.log('WebSocket connection established');
+            console.log('WebSocket connection for chat established');
+        };
+
+        socketNotif.onopen = function() {
+            console.log('WebSocket connection for notifications established');
         };
 
         socket.onmessage = function(event) {
@@ -197,7 +202,7 @@
                             'chat_id': chatId,
                             'file_url': data.url,
                             'filename': data.filename,
-                        }));
+                        }))
                     }
                     else {
                         alert(data.message)
@@ -209,6 +214,10 @@
                     'user_id': userId,
                     'chat_id': chatId,
                 }));
+                socketNotif.send(JSON.stringify({
+                    "message": message,
+                    "user_id": userSender,
+                }))
             }
             messageInput.value = '';
             fileEl.value = '';
