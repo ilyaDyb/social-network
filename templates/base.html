@@ -8,6 +8,7 @@
     {% block styles %}{% endblock styles %}
     <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "base_styles.css" %}">
 </head>
 <body>
   {% include "includes/notifications.html" %}
@@ -49,31 +50,77 @@
               
         </div>
     </div>
-    
+    <audio src="{% static "sounds/sound_of_notification.mp3" %}" style="display: none;" id="notifSound"></audio>
+    <div id="notificationContainer"></div>
     <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
     <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>
     <script src="{% static "scripts/notif.js" %}"></script>
     <script>
-      function updateUserStatus(status) {
-        fetch("/update_status/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: status })
-        });
-    }
+//    document.addEventListener("DOMContentLoaded", function () {
+        function updateUserStatus(status) {
+          fetch("/update_status/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ status: status })
+          });
+        }
+        
+        updateUserStatus('online');
+        
+        const intervalId = setInterval(() => updateUserStatus('online'), 15000);
+        
+        window.onbeforeunload = function() {
+            updateUserStatus('offline');
+            clearInterval(intervalId);
+        };
+        const notifSound = document.getElementById("notifSound")
+        const socketNotif = new WebSocket("ws://" + window.location.host + "/ws/notifications/" + "{{ request.user.id }}" + "/");
+        socketNotif.onopen = function() {
+            console.log('WebSocket connection for notifications established');
+        };
     
-    updateUserStatus('online');
+        socketNotif.onerror = function(error) {
+            console.error('WebSocket for notifications Error: ', error);
+        };
     
-    const intervalId = setInterval(() => updateUserStatus('online'), 15000);
+        socketNotif.onclose = function() {
+            console.log('WebSocket connection for notifications closed');
+        };
     
-    window.onbeforeunload = function() {
-        updateUserStatus('offline');
-        clearInterval(intervalId);
-    };
+        socketNotif.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            console.log('Notification received:', data);
+            showNotification(data)
+        };
+        function showNotification(message) {
+          const notificationContainer = document.getElementById('notificationContainer');
+          const notificationElement = document.createElement('div');
+          notificationElement.className = 'notification-block';
+          
+          const aLink = document.createElement('a');
+          aLink.setAttribute('href', `/messanger/${message.username}`);
+          aLink.textContent = message.message;
     
-    window.removeEventListener("visibilitychange", handleVisibilityChange);
+          const spanMessage = document.createElement('span');
+          spanMessage.className = 'close-btn';
+          spanMessage.innerHTML = '&times;';
+    
+          spanMessage.addEventListener('click', function() {
+              notificationContainer.removeChild(notificationElement);
+          });
+    
+          notificationElement.appendChild(aLink);
+          notificationElement.appendChild(spanMessage);
+          notificationContainer.appendChild(notificationElement);
+          console.log(notifSound)
+          notifSound.play()
+          setTimeout(() => {
+            notificationElement.remove();
+          }, 6000);
+      }
+///    });
     </script>
     {% block scripts %}{% endblock scripts %}
 </body>

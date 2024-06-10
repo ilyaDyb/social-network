@@ -44,7 +44,7 @@
     <div class="stat">
         <div class="rounded-5 align-items-center" style="background-color: #eeeeee; margin-left:30px; width: 370px; height: 200px;">
             <span class="m-3" style="color: white;"><b><a href="{% url "users:friends" user.username %}">Friends</a></b> <span style="color:grey;">{{ friends.count }}</span></span>
-            {% if user.friends %}
+            {% if friends %}
             <div style="margin-left: 18px;">
                 {% for friend in friends %}
                 {% if forloop.counter <= 8 %}
