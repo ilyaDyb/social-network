@@ -174,3 +174,11 @@ WEBPUSH_SETTINGS = {
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+SITE_URL = "localhost:8000"
+MAIL_HOST_USER = "ilyachannel1.0@gmail.com"
+MAIL_HOST_USER_PASSWORD = "pqtt inbm vjcc psrv"
+if DEBUG:
+    SITE_PROTOCOL = "http://"
+else:
+    SITE_PROTOCOL = "https://"

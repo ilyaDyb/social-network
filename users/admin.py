@@ -1,8 +1,10 @@
 from django.contrib import admin
 from .models import Users, UserProfile, Friendship
 
-
-admin.site.register(Users)
+@admin.register(Users)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ["id", "username", "first_name", "last_name", "email"]
+    search_fields = ["id", "username", "first_name", "last_name", "email"]
 admin.site.register(UserProfile)
 admin.site.register(Friendship)
 
