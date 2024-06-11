@@ -14,21 +14,21 @@ services:
       - .env
     depends_on:
       - db
-    db:
-      image: postgres
-      ports:
-        - "5433:5432"
-      environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: wicki
-        POSTGRES_DB: social_network
-      volumes:
-        - pgdata:/var/lib/postgresql/data
-      healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: wicki
+      POSTGRES_DB: social_network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # nginx:
   #   image: nginx:latest
   #   depends_on:
