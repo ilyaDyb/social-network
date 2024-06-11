@@ -100,24 +100,38 @@
           notificationElement.className = 'notification-block';
           
           const aLink = document.createElement('a');
-          aLink.setAttribute('href', `/messanger/${message.username}`);
-          aLink.textContent = message.message;
-    
+          aLink.setAttribute('href', `/messanger/${message.user_data.username}`);
+          
+          const messageContent = document.createElement('div');
+          messageContent.className = 'message-content';
+          
+          const userInfo = document.createElement('div');
+          userInfo.className = 'user-info';
+          userInfo.textContent = `${message.user_data.first_name} ${message.user_data.last_name}`;
+          
+          const messageText = document.createElement('div');
+          messageText.className = 'message-text';
+          messageText.textContent = message.message;
+      
+          aLink.appendChild(userInfo);
+          aLink.appendChild(messageText);
+          
           const spanMessage = document.createElement('span');
           spanMessage.className = 'close-btn';
           spanMessage.innerHTML = '&times;';
-    
+          
           spanMessage.addEventListener('click', function() {
               notificationContainer.removeChild(notificationElement);
           });
-    
+          
           notificationElement.appendChild(aLink);
           notificationElement.appendChild(spanMessage);
           notificationContainer.appendChild(notificationElement);
-          console.log(notifSound)
-          notifSound.play()
+          
+          notifSound.play();
+          
           setTimeout(() => {
-            notificationElement.remove();
+              notificationElement.remove();
           }, 6000);
       }
 ///    });
