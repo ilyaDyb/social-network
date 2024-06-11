@@ -1,13 +1,15 @@
 TODO start with June 8 2024
 Notifications:
 + send notifications with sound about messages from other users
++ send more data for notifications (first_name, last_name, username for url to the chat)
 Auth:
 + registration with email confirmation
 + add auto-deleting Temprory Users with pereodic tasks
 - more functionallity for auth mb
 Frontend:
 - fix display for posts photo
-- fix display notifications (it display in one place)
++ fix display notifications (it display in one place)
++ update design for notifications
 Messanger:
 - load only part of the messages
 Make development and deployment more convenient:

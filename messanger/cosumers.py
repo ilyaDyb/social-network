@@ -123,13 +123,23 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         chat_id = event["chat_id"]
         user_id = event["user_id"]
-        username = await self.get_username(user_id)
+        user_data  = await self.get_data_about_user(user_id)
         await self.send(text_data=json.dumps({
-            'message': message,
+            'message': f"{message[:30]}...",
             'chat_id': chat_id,
-            'username': username,
+            'user_data': user_data,
         }))
 
     @database_sync_to_async
-    def get_username(self, user_id):
-        return Users.objects.get(pk=user_id).username
+    def get_data_about_user(self, user_id):
+        try:
+            user_obj = Users.objects.get(pk=user_id)
+            user_data = {
+                "username": user_obj.username,
+                "first_name": user_obj.first_name,
+                "last_name": user_obj.last_name,
+            }
+            return user_data
+        except Exception as ex:
+            print(ex)
+            return None
