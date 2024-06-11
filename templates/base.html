@@ -44,13 +44,13 @@
                     <li class="list-group-item"><a href="{% url "apps:index" %}" class="btn btn-light" style="margin-top:10px; min-width: 130px;">Apps</a></li>
                 </ul>
             </div>
+            <audio src="{% static "sounds/sound_of_notification.mp3" %}" style="display: none;" id="notifSound"></audio>
             <div class="col-9">
                 {% block content %}{% endblock content %}
             </div>
               
         </div>
     </div>
-    <audio src="{% static "sounds/sound_of_notification.mp3" %}" style="display: none;" id="notifSound"></audio>
     <div id="notificationContainer"></div>
     <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
     <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>

@@ -4,9 +4,7 @@ python manage.py migrate
 
 if [ "$LOAD_FIXTURES" = "1" ]; then
   echo "Loading fixtures..."
-  for fixture in fixtures/*.json; do
-    python manage.py loaddata "$fixture"
-  done
+  python manage.py loaddata "fixtures/fixture_db.json"
 else
   echo "Skipping fixture loading."
 fi

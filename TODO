@@ -17,5 +17,8 @@ Make development and deployment more convenient:
 - add auto start celery with redis
 Optimization:
 - Caching for popular users
++ switch from sqlite3 to postgresql
 Users:
 - fix user's activity (bug with status when user is offline)
+Audios:
+- make normal audio player
