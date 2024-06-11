@@ -44,9 +44,11 @@ class Users(AbstractUser):
     def __str__(self) -> str:
         return f"{self.username}:{self.pk}"
     
+
 class TemporaryUser(models.Model):
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
     verification_token = models.CharField(max_length=256)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=Users, on_delete=models.CASCADE, related_name="user_profile")
