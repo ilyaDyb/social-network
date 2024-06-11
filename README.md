@@ -20,6 +20,8 @@ If you got some exception with loading fixtures write this in bash in the contai
 python3 manage.py flush
 python3 manage.py loaddata fixtures/fixture_db.json
 ```
+<b>But it would be better if you installed everything using bash rather than docker-compose because it requires some work.</b>
+
 If you are a recruiter and you are interested in me along with my project, please call or write, I can show all the functionality and explain why I used something here or somewhere else.
 My contacts:
 1. Phone number: <b>+79170760362</b>
