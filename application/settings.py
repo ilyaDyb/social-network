@@ -174,6 +174,17 @@ WEBPUSH_SETTINGS = {
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+from celery.schedules import crontab
+CELERY_BEAT_SCHEDULE = {
+    'delete-empty-Temporary-Users': {
+        'task': 'users.tasks.delete_empty_Temporary_User',
+        'schedule': crontab(hour=0, minute=0),
+    },
+}
 
 SITE_URL = "localhost:8000"
 MAIL_HOST_USER = "ilyachannel1.0@gmail.com"

@@ -3,7 +3,7 @@ Notifications:
 + send notifications with sound about messages from other users
 Auth:
 + registration with email confirmation
-- add auto-deleting Temprory Users with pereodic tasks
++ add auto-deleting Temprory Users with pereodic tasks
 - more functionallity for auth mb
 Frontend:
 - fix display for posts photo

@@ -46,12 +46,17 @@ def login(request):
 def registration(request):
     if request.user.is_authenticated:
         return HttpResponse(status=404)
-    
+    # users = Users.objects.filter(username__in=[f"test{i}" for i in range(100, 150)])
+    # users.update(is_active=False)
+    # temp_users = [
+    #     TemporaryUser(user=user, verification_token=get_random_string(20)) for user in users
+    # ]
+    # TemporaryUser.objects.bulk_create(temp_users)
     if request.method == "POST":
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = True
+            user.is_active = False
             user.save()
             token = get_random_string(20)
             TemporaryUser.objects.create(user=user, verification_token=token)
