@@ -14,7 +14,12 @@ And i don't add automatically start celery with redis, you should to use this co
 1. `celery -A application worker -P solo --loglevel=INFO `
 2. `celery -A application beat -l info`
 
-
+<b>WARNING!</b>
+If you got some exception with loading fixtures write this in bash in the container:
+```
+python3 manage.py flush
+python3 manage.py loaddata fixtures/fixture_db.json
+```
 If you are a recruiter and you are interested in me along with my project, please call or write, I can show all the functionality and explain why I used something here or somewhere else.
 My contacts:
 1. Phone number: <b>+79170760362</b>
