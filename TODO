@@ -7,11 +7,11 @@ Auth:
 + add auto-deleting Temprory Users with pereodic tasks
 - more functionallity for auth mb
 Frontend:
-- fix display for posts photo
++ fix display for posts photo
 + fix display notifications (it display in one place)
 + update design for notifications
 Messanger:
-- load only part of the messages
++ load only part of the messages
 Make development and deployment more convenient:
 - upgrade Dockerfile and docker-compose for deployment on nginx
 - add auto start celery with redis

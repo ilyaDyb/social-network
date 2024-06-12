@@ -1,54 +1,41 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('upload-photo-btn').addEventListener('click', function() {
-        document.getElementById('photo-input').click();
-    });
-    const chatBlock = document.getElementById("chat-messages");
-    chatBlock.scrollTop = chatBlock.scrollHeight;
-    
-    userReceiverId = document.getElementById("user_receiver_id").value
-    const chatId = document.getElementById("chatId").value;
-    const userId = document.getElementById("user_receiver_id").value;
-    const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + chatId + "/");
+    const messagesContainer = document.getElementById("chat-messages");
+    const nextPageInput = document.getElementById("id_nextPage");
 
-    socket.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        const messageElement = document.createElement('div');
-        messageElement.innerText = `${data.username}: ${data.message}`;
-        document.getElementById('chat-messages').appendChild(messageElement);
-    };
+    function loadMessages() {
+        if (!nextPageInput || isNaN(nextPageInput.value)) return;
 
-    document.getElementById('chat-message-submit').onclick = function() {
-        const messageInput = document.getElementById('chat-message-input');
-        const message = messageInput.value;
-        socket.send(JSON.stringify({
-            'message': message,
-            'user_id': userId,
-            'chat_id': chatId
-        }));
-        messageInput.value = '';
-    };
-
-    document.getElementById('upload-photo-btn').onclick = function() {
-        document.getElementById('photo-input').click();
-    };
-
-    document.getElementById('photo-input').onchange = function(event) {
-        const formData = new FormData();
-        formData.append('image', event.target.files[0]);
-        formData.append('user_id', userId);
-        formData.append('chat_id', chatId);
-        fetch('/upload/', {
+        const nextPage = nextPageInput.value;
+        const previousScrollHeight = messagesContainer.scrollHeight;
+        fetch("?page=" + nextPage, {
             method: 'POST',
-            body: formData,
-        }).then(response => response.json()).then(data => {
-            if (data.success) {
-                const message = `Sent a photo: ${data.url}`;
-                socket.send(JSON.stringify({
-                    'message': message,
-                    'user_id': userId,
-                    'chat_id': chatId
-                }));
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ page: nextPage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.html) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data.html;
+                while (tempDiv.firstChild) {
+                    messagesContainer.prepend(tempDiv.firstChild);
+                }
             }
-        });
-    };
+            if (data.next_page) {
+                nextPageInput.value = data.next_page;
+            } else {
+                nextPageInput.value = NaN;
+            }
+            messagesContainer.scrollTop = messagesContainer.scrollHeight - previousScrollHeight;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    messagesContainer.addEventListener('scroll', () => {
+        if (messagesContainer.scrollTop === 0) {
+            loadMessages();
+        }
+    });
+
 });

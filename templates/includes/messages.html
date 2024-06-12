@@ -1,0 +1,33 @@
+{% if not messages %}
+    <div class="d-flex justify-content-center" id="start-div" style="margin-top: 50%;">
+        <h3>Write him right now)</h3>
+    </div>
+{% else %}
+    {% for message in messages %}
+        {% if message.sender == user_receiver %}
+            <div class="media mb-3 d-flex justify-content-end">
+                <div class="media-body text-right">
+                    <div class="message bg-primary text-white p-2 rounded" style="max-width: 580px;">
+                        {{ message.content }}
+                        <small style="background-color: #9966cc;" class="text-dark">{{ message.get_timestamp }}</small>
+                        {% if message.file %}
+                            <img src="{{ message.file.url }}" data-image="{{ message.file.url }}" style="object-fit: cover;" class="message-image mt-2">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="media mb-3 d-flex">
+                <div class="media-body">
+                    <div class="message bg-light p-2 rounded" style="max-width: 580px;">
+                        {{ message.content }}
+                        <small style="background-color: #9966cc;" class="text-dark">{{ message.get_timestamp }}</small>
+                        {% if message.file %}
+                            <img src="{{ message.file.url }}" data-image="{{ message.file.url }}" style="object-fit: cover;" alt="" class="message-image mt-2">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
