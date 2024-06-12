@@ -19,7 +19,7 @@ class Chat(models.Model):
             return self.participant1
 
     def get_messages(self):
-        return self.messages.order_by("timestamp")
+        return self.messages.order_by("-timestamp")
     
     def get_last_message(self):
         return self.messages.order_by("-timestamp").first()

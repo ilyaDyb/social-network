@@ -47,7 +47,7 @@ $(document).ready(function() {
         var text = $("#textInput").val();
         $.ajax({
             type: "POST",
-            url: "http://" + window.location.host + "/photos/load-photo/",
+            url: "http://" + window.location.host + "/profile/edit-short-inf/",
             data: {"text": text},
             success: function(data) {
                 if (data.message != "Your text is too big") {

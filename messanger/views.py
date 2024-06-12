@@ -1,9 +1,11 @@
 import os
 
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -55,6 +57,7 @@ def upload_file(request):
             return JsonResponse({"message": validate["message"]})
     return JsonResponse({'success': False})
 
+@csrf_exempt
 @login_required
 def dialogue_page(request, username):
     user_sender = Users.objects.get(username=username)
@@ -64,6 +67,7 @@ def dialogue_page(request, username):
     chat_id = current_chat.id
 
     messages = Chat.get_messages(current_chat)
+
     is_online, last_activity = user_sender.activity.is_online, user_sender.activity.get_last_activity()
 
     if last_activity[0] == "0":
@@ -72,12 +76,35 @@ def dialogue_page(request, username):
     if messages.filter(sender=user_sender, is_read=False).exists():
         read_last_messages.delay(user_id=user_sender.id, chat_id=chat_id)
 
+    context = {}
+
+    page = request.GET.get("page")
+    print(page)
+    paginator = Paginator(messages, 10)
+    try:
+        current_page = paginator.get_page(page)
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+
+    try:
+        next_page = current_page.next_page_number()
+    except Exception:
+        next_page = None
+
     context = {
-        "messages": messages,
+        "next_page": next_page,
+        "messages": current_page[::-1],
         "user_sender": user_sender,
         "user_receiver": user_receiver,
         "is_online": is_online,
         "last_activity": last_activity,
         "chat_id": chat_id,
     }
+
+    if request.method == "POST":
+        html = render_to_string("includes/messages.html", context=context)
+        return JsonResponse({"html": html, "next_page": next_page}, safe=False)
+
     return render(request, "messanger/dialogue_page.html", context=context)

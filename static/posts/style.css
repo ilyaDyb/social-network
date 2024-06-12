@@ -35,3 +35,58 @@ img {
 .close-modal:hover {
     color: #ccc;
 }
+
+.profile-posts {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.post {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+.post-photo {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.post-header img,
+.m-1 img {
+    border-radius: 50%;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.post-header .post-author-name {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.post-time {
+    margin-left: 10px;
+    color: #888;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+}
+
+.commentText {
+    flex-grow: 1;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.sendCommentBtn {
+    margin-left: 10px;
+}
