@@ -5,7 +5,6 @@ Notifications:
 Auth:
 + registration with email confirmation
 + add auto-deleting Temprory Users with pereodic tasks
-- more functionallity for auth mb
 Frontend:
 + fix display for posts photo
 + fix display notifications (it display in one place)
