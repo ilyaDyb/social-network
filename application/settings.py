@@ -91,7 +91,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [(os.environ.get("REDIS_HOST"), os.environ.get("REDIS_PORT"))],
             "capacity": 15000,
             "expiry": 10,
             "group_expiry": 60,
@@ -103,12 +103,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("POSTGRES_ENGINE", "django.db.backends.postgresql"),
-        "NAME": os.environ.get("POSTGRES_DATABASE", "social_network"),
-        "USER": os.environ.get("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "wicki"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT"),
     }
 }
 
@@ -175,8 +175,8 @@ WEBPUSH_SETTINGS = {
     "VAPID_ADMIN_EMAIL": "ilyachannel1.0@gmail.com"
 }
 
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_BROKER_URL = os.environ.get("REDIS_SERVER")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_SERVER")
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
