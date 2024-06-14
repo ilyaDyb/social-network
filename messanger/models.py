@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q, Max
 
-from tools import tools_get_timestamp
+from utilities.tools import tools_get_timestamp
 from users.models import Users
 
     

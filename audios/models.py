@@ -16,13 +16,12 @@ class Audio(models.Model):
         return f"{self.title} - {self.author}"
 
     def get_absolute_url(self):
-        return reverse("Audio_detail", kwargs={"pk": self.pk})
+        return reverse("audios:preview", kwargs={"audio_id": self.id})
 
 class UserAudio(models.Model):
     audio = models.ForeignKey(to=Audio, on_delete=models.CASCADE, related_name="user_audios")
     user = models.ForeignKey(to=Users, on_delete=models.CASCADE, related_name="user_audios")
     
-
     class Meta:
         verbose_name = ("UserAudio")
         verbose_name_plural = ("UserAudios")
@@ -31,6 +30,4 @@ class UserAudio(models.Model):
         return f"{self.audio.title} - {self.audio.author}"
 
     def get_absolute_url(self):
-        return reverse("UserAudio_detail", kwargs={"pk": self.pk})
-
-
+        return reverse("preview", kwargs={"instance_type": "audio", "instance_id": self.audio.id})

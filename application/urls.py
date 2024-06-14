@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
+from utilities.preview_view import preview_view
 from . import settings
 # from django.views.generic.base import RedirectView
 from posts.utils import HomeRedirectView
@@ -30,7 +31,8 @@ urlpatterns = [
     path("", include("photos.urls", namespace="photos")),
     path("", include("audios.urls", namespace="audios")),
     path("apps/", include("apps.urls", namespace="apps")),
-    path("messanger/", include("messanger.urls", namespace="messanger"))
+    path("messanger/", include("messanger.urls", namespace="messanger")),
+    path("preview/<str:instance_type>/<int:instance_id>/", preview_view, name="preview"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
