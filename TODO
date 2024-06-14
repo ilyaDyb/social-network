@@ -21,3 +21,6 @@ Users:
 - fix user's activity (bug with status when user is offline)
 Audios:
 - make normal audio player
+
+Others:
++ Make good admin page for users with previews

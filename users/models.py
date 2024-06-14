@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
 
-from tools import tools_get_timestamp
+from utilities.tools import tools_get_timestamp
 
 
 class Users(AbstractUser):

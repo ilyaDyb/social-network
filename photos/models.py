@@ -1,5 +1,6 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.urls import reverse
 
 from users.models import Users
 
@@ -15,4 +16,8 @@ class Photo(models.Model):
     class Meta:
         verbose_name = ("Photo")
         verbose_name_plural = ("Photos")
+
+    def get_absolute_url(self):
+        return reverse("preview", kwargs={"instance_type": "photo", "instance_id": self.id})
+    
 

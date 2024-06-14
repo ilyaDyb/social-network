@@ -5,9 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Photo
 from users.models import Users
-from tools import photo_validate
+from utilities.tools import photo_validate
 
 
+@login_required
 def photos(request, username):
     try:
         user = Users.objects.get(username=username)

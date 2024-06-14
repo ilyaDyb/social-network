@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from application import settings
 from messanger.models import Chat, ChatManager
 from users.models import Users
-from tools import photo_validate
+from utilities.tools import photo_validate
 from .tasks import read_last_messages
 
 

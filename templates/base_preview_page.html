@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview audio</title>
+    <style>
+        .main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+    </style>
+    {% if post %}
+    <link rel="stylesheet" href="{% static "posts/style.css" %}">
+    {% endif %}
+    <link rel="stylesheet" href="{% static "modules/bootstrap.min.css" %}">
+</head>
+<body>
+    <div class="main">
+        {% if audio %}
+            <audio controls class="audio-element" data-audio-id="{{ audio.id }}">
+                <source src="{{ audio.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% elif post %}
+            <div class="profile-posts" id="post_{{ post.id }}" style="margin-bottom: 20px; max-height: 90%;">
+                <div class="post rounded-5" style="background-color: #eeeeee; max-width: 650px; width: 100%; margin: auto;">
+                    <div class="container">
+                        <div class="post-header p-2 d-flex align-items-center" style="position: relative; top:10px;">
+                            <a href="{% url "users:profile" post.user.username %}">
+                                <img style="border-radius: 50%;" src="{{ post.user.avatar.url }}" alt="" width="50" height="50">
+                            </a>
+                            <div class="ms-2">
+                                <a class="post-author-name" href="{% url "users:profile" post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a>
+                                <span class="post-time">{{ post.get_timestamp }}</span>
+                            </div>
+                        </div>
+                        <div class="post-content" style="position: relative; top:10px;">
+                            <p>{{ post.text }}</p>
+                        </div>
+                        {% if post.image %}
+                            <div style="position: relative; top:10px; max-width: 100%; overflow: hidden;">
+                                <img class="rounded-3 post-photo" src="{{ post.image.url }}" style="width: 100%; height: auto; object-fit: cover;">
+                            </div>
+                        {% endif %}
+                        <div class="post-actions d-flex align-items-center" style="margin-top: 20px;">
+                            <img class="likeBtn me-2" src="{% if not request.user in post.likes.all %}{% static "images/heart_before.png" %}{% else %}{% static "images/heart_after.png" %}{% endif %}" data-post-id="{{ post.id }}" width="32" height="32" alt="" 
+                            data-heart-after="{% static "images/heart_after.png" %}" data-heart-before="{% static "images/heart_before.png" %}">
+                            <span id="likes-{{ post.id }}">{{ post.likes.count }}</span>
+                            <img class="comments-btn ms-3" src="{% static "images/comments.png" %}" width="32" height="32" data-post-id="{{ post.id }}" data-cnt="0">
+                        </div>
+                        <div class="m-1 d-flex align-items-center mt-2">
+                            <a href="{% url "users:profile" user.username %}">
+                                <img src="{{ user.avatar.url }}" style="border-radius: 50%;" alt="" width="34" height="34">
+                            </a>
+                            <input class="commentText ms-2" type="text" placeholder="Write a comment" style="flex-grow: 1;">
+                            <input type="file" id="fileInp-{{ post.id }}" class="ms-2" style="max-width: 250px;">
+                            <button class="btn btn-outline-dark sendCommentBtn ms-2" data-post-id="{{ post.id }}">Send</button>
+                        </div>
+                        <div id="post-comments_{{ post.id }}">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="{% static "modules/bootstrap.bundle.min.js" %}"></script>
+            <script src="{% static "modules/jquery-3.7.0.min.js" %}"></script>
+            <script src="{% static "posts/posts_scripts.js" %}"></script>
+        {% elif photo %}
+            <img src="{{ photo.photo.url }}">
+        {% endif %}
+    </div>
+</body>
+</html>

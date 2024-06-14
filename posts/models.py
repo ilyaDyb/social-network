@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from tools import tools_get_timestamp
+from utilities.tools import tools_get_timestamp
 from users.models import Users
 
 
@@ -20,7 +20,7 @@ class Post(models.Model):
         return f"{self.pk} {self.user.username}'s post"
 
     def get_absolute_url(self):
-        return reverse("Posts_detail", kwargs={"pk": self.pk})
+        return reverse("preview", kwargs={"instance_type": "post", "instance_id": self.id})
     
     def get_timestamp(self):
         return tools_get_timestamp(timestamp=self.created_at)

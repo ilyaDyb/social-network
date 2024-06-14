@@ -86,3 +86,10 @@ def delete_audio(request):
             return JsonResponse({"message": "No such track in database"})
     else:
         return JsonResponse({"message": "Invalid method"})
+    
+def preview(request, audio_id):
+    try:
+        audio = Audio.objects.get(pk=audio_id)
+        return render(request, "base_preview_page.html", context={"audio": audio})
+    except Audio.DoesNotExist:
+        return HttpResponse(404)
