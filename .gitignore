@@ -4,3 +4,4 @@ db*
 media/
 celerybeat*
 staticfiles/
+.env
